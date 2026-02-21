@@ -281,6 +281,41 @@
             background-image: radial-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px);
             background-size: 30px 30px;
         }
+
+        /* Mobile Performance Optimizations */
+        @media (max-width: 768px) {
+
+            .bg-grain,
+            .ambient-glow,
+            .spotlight-card::before,
+            .spotlight-card::after {
+                display: none !important;
+            }
+
+            .glass-nav,
+            .glass-card,
+            .timeline-node,
+            #successMessage,
+            #errorMessage {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: rgba(10, 10, 10, 0.95) !important;
+            }
+
+            .animate-float,
+            .animate-pulse-slow,
+            .animate-pulse-liquid {
+                animation: none !important;
+            }
+
+            .timeline-progress-line {
+                box-shadow: 0 0 10px rgba(0, 255, 65, 0.5) !important;
+            }
+
+            .spotlight-card:hover {
+                transform: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -298,6 +333,9 @@
         <div data-us-project="NaoyTHRiquOhW7PvwNgE" class="absolute w-full h-full left-0 top-0 -z-10"></div>
         <script type="text/javascript">
             !function () {
+                // Performance: Only load UnicornStudio WebGL on Desktop
+                if (window.innerWidth <= 768) return;
+
                 var u = window.UnicornStudio;
                 if (u && u.init) {
                     if (document.readyState === "loading") {
@@ -326,10 +364,10 @@
 
     <!-- Ambient Glows -->
     <div
-        class="fixed top-[-10%] left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/5 rounded-[100%] blur-[100px] pointer-events-none z-[-1] animate-pulse-slow">
+        class="fixed top-[-10%] left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/5 rounded-[100%] blur-[100px] pointer-events-none z-[-1] animate-pulse-slow ambient-glow">
     </div>
     <div
-        class="fixed bottom-0 right-0 w-[800px] h-[600px] bg-blue-900/5 rounded-[100%] blur-[120px] pointer-events-none z-[-1]">
+        class="fixed bottom-0 right-0 w-[800px] h-[600px] bg-blue-900/5 rounded-[100%] blur-[120px] pointer-events-none z-[-1] ambient-glow">
     </div>
 
     <!-- Navigation -->
@@ -1332,7 +1370,8 @@
                     <div
                         class="rounded-2xl overflow-hidden border border-white/5 bg-surface aspect-[4/3] relative group-hover:border-white/20 transition-all duration-500 shadow-2xl">
                         <img src="IMAGES/Screenshot 2026-02-21 180946.png" alt="TourTaxi Website Screenshot"
-                            class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-700">
+                            class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-700"
+                            loading="lazy">
                     </div>
 
                     <div class="transition-all duration-500 group-hover:translate-x-2">
@@ -1397,7 +1436,8 @@
                     <div
                         class="order-1 md:order-2 rounded-2xl overflow-hidden border border-white/5 bg-surface aspect-[4/3] relative group-hover:border-white/20 transition-all duration-500 shadow-2xl">
                         <img src="IMAGES/Screenshot 2026-02-21 181902.png" alt="BlueSec Group Ltd Website Screenshot"
-                            class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-700">
+                            class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-700"
+                            loading="lazy">
                     </div>
                 </div>
 
@@ -1424,7 +1464,8 @@
                     class="spotlight-card p-8 rounded-3xl border border-white/5 bg-[#050505] relative group overflow-hidden">
                     <div
                         class="aspect-square rounded-2xl bg-white/5 mb-6 overflow-hidden border border-white/5 relative">
-                        <img src="IMAGES/1771345950312.jpg" alt="Vansh Panchal" class="w-full h-full object-cover">
+                        <img src="IMAGES/1771345950312.jpg" alt="Vansh Panchal" class="w-full h-full object-cover"
+                            loading="lazy">
                     </div>
                     <div class="flex items-center justify-between gap-2">
                         <div>
@@ -1450,7 +1491,8 @@
                     class="spotlight-card p-8 rounded-3xl border border-white/5 bg-[#050505] relative group overflow-hidden">
                     <div
                         class="aspect-square rounded-2xl bg-white/5 mb-6 overflow-hidden border border-white/5 relative">
-                        <img src="IMAGES/1771658621045.png" alt="Shilp Sevak" class="w-full h-full object-cover">
+                        <img src="IMAGES/1771658621045.png" alt="Shilp Sevak" class="w-full h-full object-cover"
+                            loading="lazy">
                     </div>
                     <div class="flex items-center justify-between gap-2">
                         <div>
@@ -1475,7 +1517,8 @@
                     class="spotlight-card p-8 rounded-3xl border border-white/5 bg-[#050505] relative group overflow-hidden">
                     <div
                         class="aspect-square rounded-2xl bg-white/5 mb-6 overflow-hidden border border-white/5 relative">
-                        <img src="IMAGES/1771432501936.jpg" alt="Ajay Tanwar" class="w-full h-full object-cover">
+                        <img src="IMAGES/1771432501936.jpg" alt="Ajay Tanwar" class="w-full h-full object-cover"
+                            loading="lazy">
                     </div>
                     <div class="flex items-center justify-between gap-2">
                         <div>
@@ -1501,7 +1544,7 @@
                     <div
                         class="aspect-square rounded-2xl bg-white/5 mb-6 overflow-hidden border border-white/5 relative">
                         <img src="IMAGES/Gemini_Generated_Image_7s6psg7s6psg7s6p.png" alt="Vishavraj Parmar"
-                            class="w-full h-full object-cover">
+                            class="w-full h-full object-cover" loading="lazy">
                     </div>
                     <div class="flex items-center justify-between gap-2">
                         <div>
@@ -1527,7 +1570,7 @@
                     <div
                         class="aspect-square rounded-2xl bg-white/5 mb-6 overflow-hidden border border-white/5 relative">
                         <img src="IMAGES/Gemini_Generated_Image_ekz08uekz08uekz0.png" alt="Rabari Dhruv"
-                            class="w-full h-full object-cover">
+                            class="w-full h-full object-cover" loading="lazy">
                     </div>
                     <div class="flex items-center justify-between gap-2">
                         <div>
@@ -1926,12 +1969,13 @@
         </div>
     </footer>
 
-    <!-- Timeline Animation Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const timelineContainer = document.getElementById('timelineContainer');
             const progressLine = document.getElementById('timelineProgress');
             const timelineItems = document.querySelectorAll('.timeline-item');
+
+            let ticking = false;
 
             const updateTimeline = () => {
                 const rect = timelineContainer.getBoundingClientRect();
@@ -1962,9 +2006,18 @@
                         if (node) node.classList.add('active');
                     }
                 });
+
+                ticking = false;
             };
 
-            window.addEventListener('scroll', updateTimeline);
+            const requestTick = () => {
+                if (!ticking) {
+                    requestAnimationFrame(updateTimeline);
+                    ticking = true;
+                }
+            };
+
+            window.addEventListener('scroll', requestTick);
             updateTimeline();
         });
     </script>
