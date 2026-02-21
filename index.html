@@ -1,0 +1,1998 @@
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE BINARYX | Digital Engineering</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@300;400;500;600&amp;display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#020202',
+                        surface: '#0A0A0A',
+                        primary: '#00FF41',
+                        secondary: '#A3A3A3',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'fade-in-up-delay-1': 'fadeInUp 1s ease-out 0.2s forwards',
+                        'fade-in-up-delay-2': 'fadeInUp 1s ease-out 0.4s forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        shimmer: {
+                            from: { backgroundPosition: '0 0' },
+                            to: { backgroundPosition: '-200% 0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #020202;
+            background-image: radial-gradient(circle at center, #111 0%, #020202 100%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020202;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Utilities */
+        .text-balance {
+            text-wrap: balance;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 9999px;
+            position: relative;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s;
+        }
+
+        .glass-nav:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Removed ambient glows for cleaner aesthetic */
+
+        @keyframes rotateBorder {
+            0% {
+                --glow-angle: 0deg;
+            }
+
+            100% {
+                --glow-angle: 360deg;
+            }
+        }
+
+        @property --glow-angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        /* Spotlight Effect Logic */
+        .spotlight-card {
+            position: relative;
+            overflow: hidden;
+            background: #0A0A0A;
+        }
+
+        /* The glow following the mouse */
+        .spotlight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(800px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(255, 255, 255, 0.06), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .spotlight-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Inner border shine */
+        .spotlight-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: radial-gradient(600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(255, 255, 255, 0.4), transparent 40%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .spotlight-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Animated Grain */
+        .bg-grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to bottom, #FFFFFF 0%, #A3A3A3 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Subtle Grid Background */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, #000 70%, transparent 100%);
+        }
+
+        /* Premium Timeline Styles */
+        .timeline-line-glow {
+            background: linear-gradient(to bottom,
+                    transparent,
+                    var(--tw-primary) 10%,
+                    var(--tw-primary) 90%,
+                    transparent);
+            filter: blur(4px);
+            opacity: 0.3;
+        }
+
+        .timeline-progress-line {
+            height: 0%;
+            transition: height 0.1s linear;
+            background: linear-gradient(to bottom,
+                    #00FF41,
+                    #22d3ee,
+                    #a855f7);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.8),
+                0 0 40px rgba(34, 211, 238, 0.4);
+        }
+
+        .timeline-node {
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 8px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+        }
+
+        .timeline-node.active {
+            transform: translate(-50%, -50%) scale(1.6);
+            background: #00FF41 !important;
+            border-color: #00FF41;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.6), 0 0 40px rgba(0, 255, 65, 0.2);
+            color: #000 !important;
+        }
+
+        .glass-card {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 255, 65, 0.3);
+            background: rgba(15, 15, 15, 0.8);
+            transform: translateY(-5px);
+        }
+
+        @keyframes pulse-liquid {
+
+            0%,
+            100% {
+                opacity: 0.5;
+                filter: blur(4px);
+            }
+
+            50% {
+                opacity: 0.8;
+                filter: blur(6px);
+            }
+        }
+
+        .animate-pulse-liquid {
+            animation: pulse-liquid 3s infinite ease-in-out;
+        }
+
+        /* Tech Background Pattern */
+        .bg-tech-dots {
+            background-image: radial-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+    </style>
+</head>
+
+<body
+    class="text-secondary antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden font-light font-sans">
+
+    <!-- ===== LOADING SCREEN ===== -->
+
+
+    <!-- Loading screen scripts -->
+
+    <!-- Background (component) added by Aura -->
+    <div class="aura-background-component fixed top-0 w-full h-screen -z-10" data-alpha-mask="80"
+        style="mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent)">
+        <div data-us-project="NaoyTHRiquOhW7PvwNgE" class="absolute w-full h-full left-0 top-0 -z-10"></div>
+        <script type="text/javascript">
+            !function () {
+                var u = window.UnicornStudio;
+                if (u && u.init) {
+                    if (document.readyState === "loading") {
+                        document.addEventListener("DOMContentLoaded", function () { u.init(); });
+                    } else {
+                        u.init();
+                    }
+                } else {
+                    window.UnicornStudio = { isInitialized: false };
+                    var i = document.createElement("script");
+                    i.src = "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.0.3/dist/unicornStudio.umd.js";
+                    i.onload = function () {
+                        if (document.readyState === "loading") {
+                            document.addEventListener("DOMContentLoaded", function () { UnicornStudio.init(); });
+                        } else {
+                            UnicornStudio.init();
+                        }
+                    };
+                    (document.head || document.body).appendChild(i);
+                }
+            }();
+        </script>
+    </div>
+
+    <div class="bg-grain"></div>
+
+    <!-- Ambient Glows -->
+    <div
+        class="fixed top-[-10%] left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/5 rounded-[100%] blur-[100px] pointer-events-none z-[-1] animate-pulse-slow">
+    </div>
+    <div
+        class="fixed bottom-0 right-0 w-[800px] h-[600px] bg-blue-900/5 rounded-[100%] blur-[120px] pointer-events-none z-[-1]">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-2 inset-x-0 z-50 h-14 glass-nav max-w-[1200px] mx-auto mx-2 md:mx-6 lg:mx-auto">
+        <div class="flex h-full px-5 md:px-6 items-center justify-between">
+            <a href="#" class="flex items-center gap-2.5 group">
+                <div
+                    class="flex group-hover:border-primary/30 transition-colors bg-gradient-to-br from-white/10 to-white/0 w-10 h-10 bg-[url(https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/81822c7d-ce9f-4b38-b74b-b69c9165a93b_320w.jpg)] bg-contain border-white/10 border rounded items-center justify-center overflow-hidden">
+                    <img src="C:\Users\vansh\OneDrive\Documents\the binary\WhatsApp Image 2025-11-19 at 20.32.22_54b9937f.jpg"
+                        alt="Logo" class="w-full h-full object-cover">
+                </div>
+                <span
+                    class="lg:bg-clip-text lg:text-transparent text-lg font-extrabold tracking-tight font-display bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-lime-400 to-lime-600">THE
+                    BINARYX TECHNOLOGY</span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#expertise"
+                    class="text-xs font-medium text-zinc-200 hover:text-white transition-colors">Expertise</a>
+                <a href="#work" class="text-xs font-medium text-zinc-200 hover:text-white transition-colors">Selected
+                    Work</a>
+                <a href="#process"
+                    class="text-xs font-medium text-zinc-200 hover:text-white transition-colors">Process</a>
+                <a href="#team" class="text-xs font-medium text-zinc-200 hover:text-white transition-colors">Team</a>
+                <a href="#about-detailed"
+                    class="text-xs font-medium text-zinc-200 hover:text-white transition-colors">Company</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="#contact"
+                    class="hidden md:flex relative group overflow-hidden rounded-full p-[1px] focus:outline-none">
+                    <span
+                        class="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#00FF41_0%,#22d3ee_25%,#a855f7_50%,#00FF41_75%,#00FF41_100%)]"></span>
+                    <span
+                        class="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-gradient-to-r from-lime-500 to-emerald-600 px-5 py-1.5 text-xs font-bold text-black backdrop-blur-3xl transition-all hover:from-lime-400 hover:to-emerald-500 shadow-[0_0_15px_rgba(0,255,65,0.3)] hover:shadow-[0_0_25px_rgba(0,255,65,0.5)]">
+                        Start Project
+                    </span>
+                </a>
+                <button class="md:hidden text-white">
+                    <iconify-icon icon="solar:hamburger-menu-linear" width="24"></iconify-icon>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="md:pt-56 md:pb-40 overflow-hidden pt-40 pr-6 pb-20 pl-6 relative">
+        <!-- Grid Background -->
+        <div class="absolute inset-0 bg-grid pointer-events-none z-0"></div>
+
+        <div class="max-w-[1200px] mx-auto relative z-10">
+            <div class="flex flex-col text-center items-center">
+
+                <!-- Badge -->
+                <div
+                    class="opacity-0 animate-fade-in-up inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/5 bg-white/[0.02] backdrop-blur-md mb-8 hover:bg-white/[0.05] transition-colors cursor-default">
+                    <span class="flex h-1.5 w-1.5 relative">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary"></span>
+                    </span>
+                    <span class="text-[10px] font-medium tracking-widest uppercase text-zinc-400">Available for new
+                        projects</span>
+                </div>
+
+                <!-- Headline -->
+                <h1
+                    class="opacity-0 animate-fade-in-up-delay-1 font-display text-5xl md:text-7xl lg:text-8xl font-medium tracking-tighter leading-[0.95] mb-8 text-balance">
+                    <span
+                        class="lg:bg-clip-text lg:text-transparent bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-[#4d7a05] to-[#5d7a33]">Engineering</span>
+                    <br>
+                    <span
+                        class="text-transparent bg-clip-text bg-gradient-to-b from-white via-white/80 to-white/20">Digital
+                        Reality.</span>
+                </h1>
+
+                <!-- Subheadline -->
+                <p
+                    class="opacity-0 animate-fade-in-up-delay-2 text-base md:text-lg text-zinc-400 max-w-xl leading-relaxed mb-8 text-balance">
+                    We don't just build software — we engineer <span class="text-white font-medium">digital
+                        ecosystems</span> that move industries. From <span class="text-white font-medium">ride-hailing
+                        platforms</span> to <span class="text-white font-medium">enterprise security systems</span>, we
+                    turn bold ideas into products people actually use. Zero fluff. All execution.
+                </p>
+
+                <!-- Tech Stack Tags -->
+                <div class="opacity-0 animate-fade-in-up-delay-2 flex flex-wrap justify-center gap-3 mb-10 max-w-2xl">
+                    <span
+                        class="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-zinc-400 font-medium flex items-center gap-1.5 hover:bg-white/10 transition-colors uppercase tracking-widest">
+                        <iconify-icon icon="logos:react" width="12"></iconify-icon> React
+                    </span>
+                    <span
+                        class="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-zinc-400 font-medium flex items-center gap-1.5 hover:bg-white/10 transition-colors uppercase tracking-widest">
+                        <iconify-icon icon="logos:nextjs-icon" width="12"></iconify-icon> Next.js
+                    </span>
+                    <span
+                        class="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-zinc-400 font-medium flex items-center gap-1.5 hover:bg-white/10 transition-colors uppercase tracking-widest">
+                        <iconify-icon icon="logos:flutter" width="12"></iconify-icon> Flutter
+                    </span>
+                    <span
+                        class="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-zinc-400 font-medium flex items-center gap-1.5 hover:bg-white/10 transition-colors uppercase tracking-widest">
+                        <iconify-icon icon="logos:nodejs-icon" width="12"></iconify-icon> Node.js
+                    </span>
+                    <span
+                        class="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-zinc-400 font-medium flex items-center gap-1.5 hover:bg-white/10 transition-colors uppercase tracking-widest">
+                        <iconify-icon icon="logos:supabase-icon" width="12"></iconify-icon> Supabase
+                    </span>
+                    <span
+                        class="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-zinc-400 font-medium flex items-center gap-1.5 hover:bg-white/10 transition-colors uppercase tracking-widest">
+                        <iconify-icon icon="logos:aws" width="12"></iconify-icon> AWS
+                    </span>
+                </div>
+
+                <!-- Actions -->
+                <div
+                    class="opacity-0 animate-fade-in-up-delay-2 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                    <a href="#contact"
+                        class="sm:w-auto flex items-center justify-center hover:bg-zinc-200 transition-all hover:scale-105 active:scale-95 text-sm font-medium text-black bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-lime-400 to-lime-600/5 w-full h-12 rounded-full px-8 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                        Get in touch
+                    </a>
+                    <a href="#work"
+                        class="flex items-center justify-center hover:bg-white/10 transition-all group sm:w-auto text-sm font-medium text-white bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-[#33a1e6] to-lime-600/5 w-full h-12 border-white/10 border rounded-full pr-8 pl-8 backdrop-blur-sm">
+                        View Work
+                        <iconify-icon icon="solar:arrow-right-linear"
+                            class="ml-2 group-hover:translate-x-1 transition-transform"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Expertise / Services -->
+    <section class="bg-[#030303] border-white/5 border-t pt-24 pr-6 pb-24 pl-6 relative" id="expertise">
+        <div class="max-w-[1200px] mx-auto">
+            <!-- Section Header -->
+            <div class="flex flex-col md:flex-row gap-6 mb-16 items-end justify-between">
+                <div>
+                    <p class="text-[10px] font-medium tracking-[0.3em] uppercase text-primary mb-4">What We Do</p>
+                    <h2
+                        class="md:text-5xl md:bg-clip-text md:text-transparent text-3xl font-extrabold tracking-tight font-display bg-[conic-gradient(from_180deg,var(--tw-gradient-stops))] from-emerald-400 via-emerald-600 to-emerald-400 mb-4">
+                        Our Expertise</h2>
+                    <p class="text-sm text-zinc-500 max-w-md">End-to-end digital solutions — from concept to deployment.
+                        We build products that scale, perform, and look stunning.</p>
+                </div>
+                <div class="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent hidden md:block mx-8 mb-2"></div>
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="text-[10px] text-zinc-600 uppercase tracking-widest hidden md:inline">4 Core
+                        Services</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                <!-- APP DEVELOPMENT SERVICES — Large Card (spans 2 cols) -->
+                <div
+                    class="spotlight-card md:col-span-2 p-8 md:p-10 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 p-8 opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-700">
+                        <iconify-icon icon="solar:smartphone-2-linear" width="200" height="200"
+                            class="text-white rotate-12"></iconify-icon>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    </div>
+                    <div class="relative z-10 h-full flex flex-col justify-between min-h-[200px]">
+                        <div class="flex items-center gap-4 mb-10">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-primary shadow-[0_0_15px_rgba(0,255,65,0.1)] group-hover:shadow-[0_0_25px_rgba(0,255,65,0.2)] transition-shadow">
+                                <iconify-icon icon="solar:smartphone-2-linear" width="24"></iconify-icon>
+                            </div>
+                            <div
+                                class="px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-[10px] uppercase tracking-wider text-primary font-medium">
+                                Popular</div>
+                        </div>
+                        <div>
+                            <h3
+                                class="text-2xl font-semibold text-white mb-3 group-hover:text-primary transition-colors duration-300">
+                                App Development Services</h3>
+                            <p class="text-sm text-zinc-400 max-w-lg leading-relaxed">Native and cross-platform mobile
+                                applications for iOS & Android. We craft performant, beautiful apps with Flutter, React
+                                Native, and Swift — from MVP to enterprise-grade products with real-time features,
+                                offline support, and seamless UX.</p>
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <span
+                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Flutter</span>
+                                <span
+                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">React
+                                    Native</span>
+                                <span
+                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Swift</span>
+                                <span
+                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Kotlin</span>
+                                <span
+                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Firebase</span>
+                            </div>
+                            <div class="mt-8 pt-6 border-t border-white/5">
+                                <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-4 font-semibold">Key
+                                    Deliverables</p>
+                                <ul class="grid grid-cols-2 gap-y-2 gap-x-4">
+                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon> Native
+                                        Core Apps</li>
+                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon> App
+                                        Store Submission</li>
+                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon>
+                                        Biometric Security</li>
+                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon> Push
+                                        Infrastructure</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SAAS DEVELOPMENT — Tall Card (spans 2 rows) -->
+                <div
+                    class="spotlight-card md:col-span-1 md:row-span-2 p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    </div>
+                    <div class="relative z-10 h-full flex flex-col justify-between">
+                        <div>
+                            <div
+                                class="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center mb-8 text-primary shadow-[0_0_15px_rgba(0,255,65,0.1)] group-hover:shadow-[0_0_25px_rgba(0,255,65,0.2)] transition-shadow">
+                                <iconify-icon icon="solar:cloud-linear" width="24"></iconify-icon>
+                            </div>
+                            <h3
+                                class="text-xl text-white font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
+                                SaaS Development</h3>
+                            <p class="text-sm text-zinc-400 leading-relaxed">Scalable, multi-tenant SaaS platforms built
+                                for growth. We engineer subscription billing, role-based access, analytics dashboards,
+                                and API-first architectures that handle millions of users.</p>
+                        </div>
+
+                        <div class="mt-8 space-y-4">
+                            <div>
+                                <div class="flex justify-between text-[10px] text-zinc-500 mb-1.5">
+                                    <span>Scalability</span>
+                                    <span
+                                        class="text-primary group-hover:opacity-100 opacity-0 transition-opacity">99.9%</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                    <div
+                                        class="h-full w-[95%] bg-primary/50 group-hover:w-full transition-all duration-1000 ease-out rounded-full">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-[10px] text-zinc-500 mb-1.5">
+                                    <span>Security</span>
+                                    <span
+                                        class="text-primary group-hover:opacity-100 opacity-0 transition-opacity">Enterprise</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                    <div
+                                        class="h-full w-[85%] bg-primary/30 group-hover:w-[95%] transition-all duration-1000 ease-out delay-100 rounded-full">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-[10px] text-zinc-500 mb-1.5">
+                                    <span>Performance</span>
+                                    <span
+                                        class="text-primary group-hover:opacity-100 opacity-0 transition-opacity">&lt;100ms</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                    <div
+                                        class="h-full w-[90%] bg-primary/20 group-hover:w-full transition-all duration-1000 ease-out delay-200 rounded-full">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-white/5">
+                                <span
+                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Stripe</span>
+                                <span
+                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">AWS</span>
+                                <span
+                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Supabase</span>
+                            </div>
+                            <div class="mt-6 pt-6 border-t border-white/5">
+                                <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-4 font-semibold">Core
+                                    Features</p>
+                                <ul class="space-y-2">
+                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon>
+                                        Multi-tenant Architecture</li>
+                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon> RBAC
+                                        Permissions</li>
+                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon>
+                                        Usage-based Billing</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WEB DEVELOPMENT — Regular Card -->
+                <div
+                    class="spotlight-card p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    </div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center mb-8 text-primary shadow-[0_0_15px_rgba(0,255,65,0.1)] group-hover:shadow-[0_0_25px_rgba(0,255,65,0.2)] transition-shadow">
+                            <iconify-icon icon="solar:monitor-linear" width="24"></iconify-icon>
+                        </div>
+                        <h3
+                            class="text-xl text-white font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
+                            Web Development</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-6">High-performance websites and web
+                            applications built with React, Next.js, and modern backend stacks. SEO-optimized,
+                            responsive, and lightning fast.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">React</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Next.js</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Node.js</span>
+                        </div>
+                        <div class="mt-6 pt-6 border-t border-white/5">
+                            <ul class="space-y-2">
+                                <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                        icon="solar:check-circle-linear" class="text-primary"></iconify-icon> Core Web
+                                    Vitals Optimization</li>
+                                <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                        icon="solar:check-circle-linear" class="text-primary"></iconify-icon>
+                                    Server-side Rendering</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UI/UX DESIGN — Regular Card -->
+                <div
+                    class="spotlight-card p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    </div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center mb-8 text-primary shadow-[0_0_15px_rgba(0,255,65,0.1)] group-hover:shadow-[0_0_25px_rgba(0,255,65,0.2)] transition-shadow">
+                            <iconify-icon icon="solar:palette-linear" width="24"></iconify-icon>
+                        </div>
+                        <h3
+                            class="text-xl text-white font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
+                            UI / UX Design</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-6">User-centered design that converts. We
+                            create intuitive interfaces, design systems, and interactive prototypes that look stunning
+                            and drive results.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Figma</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Prototyping</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Design
+                                Systems</span>
+                        </div>
+                        <div class="mt-6 pt-6 border-t border-white/5">
+                            <ul class="space-y-2">
+                                <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                        icon="solar:check-circle-linear" class="text-primary"></iconify-icon>
+                                    Interactive Prototypes</li>
+                                <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                        icon="solar:check-circle-linear" class="text-primary"></iconify-icon> Brand
+                                    identity kits</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI INTEGRATION — New Card -->
+                <div
+                    class="spotlight-card p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    </div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center mb-8 text-primary shadow-[0_0_15px_rgba(0,255,65,0.1)] group-hover:shadow-[0_0_25px_rgba(0,255,65,0.2)] transition-shadow">
+                            <iconify-icon icon="solar:globus-linear" width="24"></iconify-icon>
+                        </div>
+                        <h3
+                            class="text-xl text-white font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
+                            AI Integration</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-6">Leveraging LLMs and machine learning to
+                            build intelligent automation and data-driven features for your platform.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">OpenAI</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">LangChain</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Python</span>
+                        </div>
+                        <div class="mt-6 pt-6 border-t border-white/5">
+                            <ul class="space-y-2">
+                                <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                        icon="solar:check-circle-linear" class="text-primary"></iconify-icon> Custom
+                                    RAG Pipelines</li>
+                                <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
+                                        icon="solar:check-circle-linear" class="text-primary"></iconify-icon> Agentic
+                                    Workflows</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us (Minimal) -->
+    <section id="about" class="py-24 px-6 border-t border-white/5 bg-white/[0.01]">
+        <div class="grid lg:grid-cols-2 max-w-[1200px] mr-auto ml-auto gap-x-20 gap-y-20 items-center">
+            <div data-aos="fade-right" class="">
+                <h2
+                    class="md:text-5xl leading-tight text-3xl font-medium text-white tracking-tighter font-display mb-8">
+                    Code written for <br>
+                    <span
+                        class="lg:bg-clip-text lg:text-transparent bg-[conic-gradient(from_180deg,var(--tw-gradient-stops))] from-green-400 via-green-600 to-green-400">humans
+                        and machines.</span>
+                </h2>
+                <div class="space-y-6 text-base font-light text-zinc-400 leading-relaxed max-w-lg">
+                    <p class="">
+                        At THE BINARYX, we don't just ship features. We build digital ecosystems. Our code is clean,
+                        documented, and tested. Our designs are intuitive and purposeful.
+                    </p>
+                    <p class="">
+                        We bridge the gap between complex backend logic and seamless frontend interactivity, ensuring
+                        your product is as robust as it is beautiful.
+                    </p>
+                </div>
+
+                <div class="mt-10 pt-10 border-t border-white/5 grid grid-cols-3 gap-8">
+                    <div class="">
+                        <div class="text-2xl text-white font-display font-medium">100%</div>
+                        <div class="text-[10px] uppercase tracking-wider text-zinc-500 mt-1">Uptime Goal</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl text-white font-display font-medium">&lt;100ms</div>
+                        <div class="text-[10px] uppercase tracking-wider text-zinc-500 mt-1">Latency</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl text-white font-display font-medium">24/7</div>
+                        <div class="text-[10px] uppercase tracking-wider text-zinc-500 mt-1">Support</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative animate-float">
+                <div class="absolute inset-0 bg-primary/20 blur-[100px] opacity-20"></div>
+                <div class="relative rounded-2xl border border-white/10 bg-surface/50 backdrop-blur-xl p-1 shadow-2xl">
+                    <div
+                        class="rounded-xl overflow-hidden border border-white/5 bg-[#050505] p-6 font-mono text-xs md:text-sm text-zinc-400 leading-loose relative">
+                        <!-- Code Header -->
+                        <div class="flex gap-2 mb-6 border-b border-white/5 pb-4 items-center">
+                            <div class="flex gap-2">
+                                <div class="w-3 h-3 rounded-full bg-[#FF5F56]"></div>
+                                <div class="w-3 h-3 rounded-full bg-[#FFBD2E]"></div>
+                                <div class="w-3 h-3 rounded-full bg-[#27C93F]"></div>
+                            </div>
+                            <div class="ml-4 text-[10px] text-zinc-600">binaryx.ts</div>
+                        </div>
+
+                        <!-- Code Content -->
+                        <div class="relative">
+                            <div class="absolute left-0 top-0 bottom-0 w-[1px] bg-white/5"></div>
+                            <p class=""><span class="text-purple-400">const</span> <span
+                                    class="text-blue-400">future</span> = <span class="text-purple-400">async</span> ()
+                                =&gt; {</p>
+                            <p class="pl-4 border-l border-white/5 ml-[3px]"><span class="text-purple-400">await</span>
+                                <span class="text-yellow-200">binaryx</span>.<span
+                                    class="text-blue-300">innovate</span>({
+                            </p>
+                            <p class="pl-8 border-l border-white/5 ml-[3px]"><span class="text-zinc-500">design:</span>
+                                <span class="text-green-400">'pixel-perfect'</span>,
+                            </p>
+                            <p class="pl-8 border-l border-white/5 ml-[3px]"><span
+                                    class="text-zinc-500">performance:</span> <span
+                                    class="text-green-400">'lightning-fast'</span>,</p>
+                            <p class="pl-8 border-l border-white/5 ml-[3px]"><span
+                                    class="text-zinc-500">security:</span> <span
+                                    class="text-green-400">'enterprise-grade'</span></p>
+                            <p class="pl-4 border-l border-white/5 ml-[3px]">});</p>
+                            <p class="pl-4 border-l border-white/5 ml-[3px]"><span class="text-purple-400">return</span>
+                                <span class="text-green-400">'Success'</span>;
+                            </p>
+                            <p class="">}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed About Us Section -->
+    <section id="about-detailed" class="py-24 px-6 border-t border-white/5 relative bg-[#020202]">
+        <div class="absolute inset-0 bg-grid opacity-50 pointer-events-none"></div>
+        <div class="max-w-[1200px] mx-auto relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-start mb-20">
+                <div>
+                    <p class="text-[10px] font-medium tracking-[0.3em] uppercase text-primary mb-4">Our DNA</p>
+                    <h2
+                        class="md:text-6xl text-4xl font-extrabold tracking-tight font-display text-white mb-8 leading-tight">
+                        Built on <span class="text-gradient">Technical Integrity</span> & Visionary Thinking.
+                    </h2>
+                </div>
+                <div class="space-y-6">
+                    <p class="text-lg text-zinc-300 leading-relaxed">
+                        Founded on the principles of technical precision and creative innovation, THE BINARYX TECHNOLOGY
+                        PRIVATE LIMITED has grown from a specialized engineering boutique into a full-scale digital
+                        innovation partner. We don't just build software; we architect the future.
+                    </p>
+                    <p class="text-base text-zinc-400 leading-relaxed">
+                        Our team thrives on solving the most complex engineering challenges, ensuring that every line of
+                        code we write and every pixel we place serves a higher purpose: driving real-world impact for
+                        ambitious global brands. We believe that digital excellence is not an accident—it's the result
+                        of high intention, sincere effort, and intelligent execution.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Mission & Vision Cards -->
+            <div class="grid md:grid-cols-2 gap-8 mb-20">
+                <div
+                    class="spotlight-card p-10 rounded-3xl border border-white/5 bg-[#050505] relative group overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-700">
+                        <iconify-icon icon="solar:target-bold" width="160" height="160"
+                            class="text-white"></iconify-icon>
+                    </div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-8">
+                            <iconify-icon icon="solar:target-linear" width="28"></iconify-icon>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Our Mission</h3>
+                        <p class="text-zinc-400 leading-relaxed">
+                            To empower businesses by architecting high-performance digital solutions that combine
+                            technical excellence with purposeful design, ensuring sustainable growth and competitive
+                            advantage in a digital-first world.
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="spotlight-card p-10 rounded-3xl border border-white/5 bg-[#050505] relative group overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-700">
+                        <iconify-icon icon="solar:eye-bold" width="160" height="160" class="text-white"></iconify-icon>
+                    </div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-8">
+                            <iconify-icon icon="solar:eye-linear" width="28"></iconify-icon>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Our Vision</h3>
+                        <p class="text-zinc-400 leading-relaxed">
+                            To be the global benchmark for digital engineering, where innovation meets precision in
+                            every digital reality we create, setting new standards for how products are conceived and
+                            built.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Values Grid -->
+            <div>
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-white mb-2">Our Core Values</h3>
+                    <p class="text-zinc-500">The pillars that define our approach to every project.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div
+                        class="p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                        <div class="text-primary mb-4 font-display font-medium text-lg">01. Precision</div>
+                        <p class="text-sm text-zinc-400">We sweat the small stuff. From pixel-perfect layouts to
+                            optimized backend queries, accuracy is non-negotiable.</p>
+                    </div>
+                    <div
+                        class="p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                        <div class="text-primary mb-4 font-display font-medium text-lg">02. Innovation</div>
+                        <p class="text-sm text-zinc-400">We don't just follow trends; we set them. We constantly explore
+                            new technologies to deliver cutting-edge solutions.</p>
+                    </div>
+                    <div
+                        class="p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                        <div class="text-primary mb-4 font-display font-medium text-lg">03. Integrity</div>
+                        <p class="text-sm text-zinc-400">Transparency and honesty are at the heart of our client
+                            relationships. We build trust through delivery.</p>
+                    </div>
+                    <div
+                        class="p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                        <div class="text-primary mb-4 font-display font-medium text-lg">04. Impact</div>
+                        <p class="text-sm text-zinc-400">We measure success by the value we create for our partners and
+                            the users who interact with our products.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Process Section (Timeline Redesign) -->
+    <section id="process" class="py-32 px-6 border-t border-white/5 relative bg-[#020202] overflow-hidden">
+        <div class="absolute inset-0 bg-grid opacity-30 pointer-events-none"></div>
+
+        <div class="max-w-[1200px] mx-auto relative z-10">
+            <div class="text-center mb-24">
+                <p class="text-[10px] font-medium tracking-[0.3em] uppercase text-primary mb-4">Our Methodology</p>
+                <h2 class="md:text-6xl text-4xl font-extrabold tracking-tight font-display text-white mb-6">Execution
+                    <span class="text-gradient">Timeline</span>
+                </h2>
+                <p class="text-zinc-500 max-w-xl mx-auto text-lg leading-relaxed">A strategic, phase-gated approach to
+                    building high-impact digital products.</p>
+            </div>
+
+            <!-- Timeline Container -->
+            <div class="relative py-12" id="timelineContainer">
+                <!-- Outer glow line -->
+                <div
+                    class="absolute left-8 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[4px] timeline-line-glow animate-pulse-liquid rounded-full">
+                </div>
+
+                <!-- Central vertical line (base) -->
+                <div class="absolute left-8 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-px bg-white/5"></div>
+
+                <!-- Progress Line (Animated) -->
+                <div id="timelineProgress"
+                    class="absolute left-8 md:left-1/2 md:-translate-x-1/2 top-0 w-[3px] timeline-progress-line rounded-full z-10">
+                </div>
+
+                <!-- Process Steps -->
+                <div class="space-y-24">
+
+                    <!-- Step 01: Discovery -->
+                    <div
+                        class="relative flex flex-col md:flex-row items-center justify-between group timeline-item opacity-0 translate-y-12 transition-all duration-1000 ease-out">
+                        <div class="hidden md:block w-[45%]"></div>
+                        <!-- Node -->
+                        <div
+                            class="timeline-node absolute left-8 md:left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white/10 z-20 border border-white/20 group-hover:bg-primary group-hover:border-primary group-hover:scale-150 transition-all duration-500 shadow-[0_0_10px_rgba(255,255,255,0.05)] flex items-center justify-center text-[10px] font-bold">
+                            01</div>
+                        <!-- Content -->
+                        <div
+                            class="w-full md:w-[45%] ml-16 md:ml-0 spotlight-card glass-card p-8 rounded-3xl relative border-white/10 group-hover:border-primary/40 transition-all overflow-hidden">
+                            <div
+                                class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.15] transition-opacity duration-700">
+                                <iconify-icon icon="solar:magnifer-linear" width="120"
+                                    class="text-white"></iconify-icon>
+                            </div>
+                            <div class="text-5xl font-display font-bold text-white/[0.03] absolute -top-4 -left-2">01
+                            </div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                                    <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white uppercase tracking-tight">Discovery</h3>
+                            </div>
+                            <p class="text-zinc-400 mb-6 leading-relaxed relative z-10">Defining the project blueprint
+                                through deep research and technical analysis.</p>
+                            <div class="mt-4 mb-6 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                                <p class="text-[10px] text-primary uppercase tracking-[0.2em] font-semibold mb-2">
+                                    Deliverable</p>
+                                <p class="text-[12px] text-zinc-300 font-medium">Technical Specification & High-Fidelity
+                                    Wireframes</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 relative z-10">
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Research</span>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Analysis</span>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Strategy</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 02: Proposal -->
+                    <div
+                        class="relative flex flex-col md:flex-row-reverse items-center justify-between group timeline-item opacity-0 translate-y-12 transition-all duration-1000 ease-out">
+                        <div class="hidden md:block w-[45%]"></div>
+                        <!-- Node -->
+                        <div
+                            class="timeline-node absolute left-8 md:left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white/10 z-20 border border-white/20 group-hover:bg-primary group-hover:border-primary group-hover:scale-150 transition-all duration-500 shadow-[0_0_10px_rgba(255,255,255,0.05)] flex items-center justify-center text-[10px] font-bold">
+                            02</div>
+                        <!-- Content -->
+                        <div
+                            class="w-full md:w-[45%] ml-16 md:ml-0 spotlight-card glass-card p-8 rounded-3xl relative border-white/10 group-hover:border-primary/40 transition-all overflow-hidden text-right md:text-left">
+                            <div
+                                class="absolute top-0 left-0 p-6 opacity-[0.05] group-hover:opacity-[0.15] transition-opacity duration-700">
+                                <iconify-icon icon="solar:document-text-linear" width="120"
+                                    class="text-white"></iconify-icon>
+                            </div>
+                            <div class="text-5xl font-display font-bold text-white/[0.03] absolute -top-4 -right-2">02
+                            </div>
+                            <div class="flex items-center gap-3 mb-4 justify-end md:justify-start">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                                    <iconify-icon icon="solar:document-text-linear" width="20"></iconify-icon>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white uppercase tracking-tight">Proposal</h3>
+                            </div>
+                            <p class="text-zinc-400 mb-6 leading-relaxed">Clear deliverables, transparent pricing, and
+                                comprehensive roadmaps.</p>
+                            <div class="mt-4 mb-6 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                                <p class="text-[10px] text-blue-400 uppercase tracking-[0.2em] font-semibold mb-2">
+                                    Deliverable</p>
+                                <p class="text-[12px] text-zinc-300 font-medium">Custom Service Agreement & Project
+                                    Roadmap</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 justify-end md:justify-start">
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Milestones</span>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Pricing</span>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Contract</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 03: Development -->
+                    <div
+                        class="relative flex flex-col md:flex-row items-center justify-between group timeline-item opacity-0 translate-y-12 transition-all duration-1000 ease-out">
+                        <div class="hidden md:block w-[45%]"></div>
+                        <!-- Node -->
+                        <div
+                            class="timeline-node absolute left-8 md:left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white/10 z-20 border border-white/20 group-hover:bg-primary group-hover:border-primary group-hover:scale-150 transition-all duration-500 shadow-[0_0_10px_rgba(255,255,255,0.05)] flex items-center justify-center text-[10px] font-bold">
+                            03</div>
+                        <!-- Content -->
+                        <div
+                            class="w-full md:w-[45%] ml-16 md:ml-0 spotlight-card glass-card p-8 rounded-3xl relative border-white/10 group-hover:border-primary/40 transition-all overflow-hidden">
+                            <div
+                                class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.15] transition-opacity duration-700">
+                                <iconify-icon icon="solar:code-circle-linear" width="120"
+                                    class="text-white"></iconify-icon>
+                            </div>
+                            <div class="text-5xl font-display font-bold text-white/[0.03] absolute -top-4 -left-2">03
+                            </div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                                    <iconify-icon icon="solar:code-circle-linear" width="20"></iconify-icon>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white uppercase tracking-tight">Development</h3>
+                            </div>
+                            <p class="text-zinc-400 mb-6 leading-relaxed">Agile sprints bringing designs to life through
+                                clean, performant code.</p>
+                            <div class="mt-4 mb-6 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                                <p class="text-[10px] text-purple-400 uppercase tracking-[0.2em] font-semibold mb-2">
+                                    Deliverable</p>
+                                <p class="text-[12px] text-zinc-300 font-medium">Interactive Beta & Staging Environment
+                                    Access</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">UI/UX</span>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Frontend</span>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Backend</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 04: Testing -->
+                    <div
+                        class="relative flex flex-col md:flex-row-reverse items-center justify-between group timeline-item opacity-0 translate-y-12 transition-all duration-1000 ease-out">
+                        <div class="hidden md:block w-[45%]"></div>
+                        <!-- Node -->
+                        <div
+                            class="timeline-node absolute left-8 md:left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white/10 z-20 border border-white/20 group-hover:bg-primary group-hover:border-primary group-hover:scale-150 transition-all duration-500 shadow-[0_0_10px_rgba(255,255,255,0.05)] flex items-center justify-center text-[10px] font-bold">
+                            04</div>
+                        <!-- Content -->
+                        <div
+                            class="w-full md:w-[45%] ml-16 md:ml-0 spotlight-card glass-card p-8 rounded-3xl relative border-white/10 group-hover:border-primary/40 transition-all overflow-hidden text-right md:text-left">
+                            <div
+                                class="absolute top-0 left-0 p-6 opacity-[0.05] group-hover:opacity-[0.15] transition-opacity duration-700">
+                                <iconify-icon icon="solar:bug-minimalistic-linear" width="120"
+                                    class="text-white"></iconify-icon>
+                            </div>
+                            <div class="text-5xl font-display font-bold text-white/[0.03] absolute -top-4 -right-2">04
+                            </div>
+                            <div class="flex items-center gap-3 mb-4 justify-end md:justify-start">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400">
+                                    <iconify-icon icon="solar:bug-minimalistic-linear" width="20"></iconify-icon>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white uppercase tracking-tight">Testing</h3>
+                            </div>
+                            <p class="text-zinc-400 mb-6 leading-relaxed">Rigorous QA, security audits, and performance
+                                optimization.</p>
+                            <div class="mt-4 mb-6 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                                <p class="text-[10px] text-orange-400 uppercase tracking-[0.2em] font-semibold mb-2">
+                                    Deliverable</p>
+                                <p class="text-[12px] text-zinc-300 font-medium">QA Report & Security Audit
+                                    Documentation</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 justify-end md:justify-start">
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">QA</span>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Security</span>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Load</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 05: Deployment -->
+                    <div
+                        class="relative flex flex-col md:flex-row items-center justify-between group timeline-item opacity-0 translate-y-12 transition-all duration-1000 ease-out">
+                        <div class="hidden md:block w-[45%]"></div>
+                        <!-- Node -->
+                        <div
+                            class="timeline-node absolute left-8 md:left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white/10 z-20 border border-white/20 group-hover:bg-primary group-hover:border-primary group-hover:scale-150 transition-all duration-500 shadow-[0_0_10px_rgba(255,255,255,0.05)] flex items-center justify-center text-[10px] font-bold">
+                            05</div>
+                        <!-- Content -->
+                        <div
+                            class="w-full md:w-[45%] ml-16 md:ml-0 spotlight-card glass-card p-8 rounded-3xl relative border-white/10 group-hover:border-primary/40 transition-all overflow-hidden">
+                            <div
+                                class="absolute top-0 right-0 p-6 opacity-[0.05] group-hover:opacity-[0.15] transition-opacity duration-700">
+                                <iconify-icon icon="solar:rocket-linear" width="120" class="text-white"></iconify-icon>
+                            </div>
+                            <div class="text-5xl font-display font-bold text-white/[0.03] absolute -top-4 -left-2">05
+                            </div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                                    <iconify-icon icon="solar:rocket-linear" width="20"></iconify-icon>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white uppercase tracking-tight">Deployment</h3>
+                            </div>
+                            <p class="text-zinc-400 mb-6 leading-relaxed">Seamless production launch with comprehensive
+                                monitoring systems.</p>
+                            <div class="mt-4 mb-6 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                                <p class="text-[10px] text-emerald-400 uppercase tracking-[0.2em] font-semibold mb-2">
+                                    Deliverable</p>
+                                <p class="text-[12px] text-zinc-300 font-medium">Live Production Build & Post-Launch
+                                    Support Plan</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">CI/CD</span>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Provision</span>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Launch</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 06: Support -->
+                    <div
+                        class="relative flex flex-col md:flex-row-reverse items-center justify-between group timeline-item opacity-0 translate-y-12 transition-all duration-1000 ease-out">
+                        <div class="hidden md:block w-[45%]"></div>
+                        <!-- Node -->
+                        <div
+                            class="timeline-node absolute left-8 md:left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white/10 z-20 border border-white/20 group-hover:bg-primary group-hover:border-primary group-hover:scale-150 transition-all duration-500 shadow-[0_0_10px_rgba(255,255,255,0.05)] flex items-center justify-center text-[10px] font-bold">
+                            06</div>
+                        <!-- Content -->
+                        <div
+                            class="w-full md:w-[45%] ml-16 md:ml-0 spotlight-card glass-card p-8 rounded-3xl relative border-white/10 group-hover:border-primary/40 transition-all overflow-hidden text-right md:text-left">
+                            <div
+                                class="absolute top-0 left-0 p-6 opacity-[0.05] group-hover:opacity-[0.15] transition-opacity duration-700">
+                                <iconify-icon icon="solar:shield-check-linear" width="120"
+                                    class="text-white"></iconify-icon>
+                            </div>
+                            <div class="text-5xl font-display font-bold text-white/[0.03] absolute -top-4 -right-2">06
+                            </div>
+                            <div class="flex items-center gap-3 mb-4 justify-end md:justify-start">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                                    <iconify-icon icon="solar:shield-check-linear" width="20"></iconify-icon>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white uppercase tracking-tight">Support</h3>
+                            </div>
+                            <p class="text-zinc-400 mb-6 leading-relaxed">Ongoing maintenance, feature updates, and 24/7
+                                technical surveillance.</p>
+                            <div class="mt-4 mb-6 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                                <p class="text-[10px] text-cyan-400 uppercase tracking-[0.2em] font-semibold mb-2">
+                                    Deliverable</p>
+                                <p class="text-[12px] text-zinc-300 font-medium">Monthly Audit Reports & SLA Agreement
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 justify-end md:justify-start">
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Maintain</span>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Scale</span>
+                                <span
+                                    class="px-3 py-1 rounded-full bg-white/5 border border-white/5 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">Surveil</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Selected Works -->
+    <section id="work" class="py-24 px-6 border-t border-white/5">
+        <div class="max-w-[1200px] mx-auto">
+            <h2 class="font-display text-3xl md:text-4xl font-normal text-white tracking-tight mb-12">Selected Work</h2>
+
+            <div class="space-y-20">
+                <!-- Project 1: TourTaxi App -->
+                <div class="group grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+                    <div class="order-2 md:order-1 transition-all duration-500 group-hover:translate-x-2">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div
+                                class="px-3 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider text-zinc-300 bg-white/5">
+                                Mobile App</div>
+                            <div class="text-[10px] text-zinc-500">2025</div>
+                        </div>
+                        <h3 class="text-2xl text-white font-medium mb-3 group-hover:text-primary transition-colors">
+                            TourTaxi — Mobile App</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-6">A full-featured ride-hailing and tour
+                            booking application built with Flutter. Features real-time GPS tracking, in-app payments,
+                            driver-rider matching, trip history, and a seamless booking flow for both local transport
+                            and guided tours.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Flutter</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Firebase</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Google
+                                Maps API</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Stripe</span>
+                        </div>
+                    </div>
+
+                    <div
+                        class="order-1 md:order-2 rounded-2xl overflow-hidden border border-white/5 bg-surface aspect-[4/3] relative group-hover:border-white/20 transition-all duration-500 shadow-2xl">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-amber-900/60 via-zinc-900 to-amber-800/40">
+                        </div>
+
+                        <!-- Abstract Mobile App UI -->
+                        <div
+                            class="absolute inset-x-[30%] inset-y-4 rounded-[2rem] border border-white/10 bg-[#080808] shadow-2xl flex flex-col overflow-hidden group-hover:scale-[1.03] transition-transform duration-700">
+                            <!-- Status bar -->
+                            <div class="h-6 bg-white/[0.02] flex items-center justify-center">
+                                <div class="w-16 h-1.5 bg-white/10 rounded-full"></div>
+                            </div>
+                            <!-- Map area -->
+                            <div class="flex-1 bg-white/[0.03] relative m-2 rounded-xl overflow-hidden">
+                                <div class="absolute inset-0 bg-gradient-to-b from-amber-500/5 to-transparent"></div>
+                                <!-- Map pin -->
+                                <div class="absolute top-1/3 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                                    <iconify-icon icon="solar:map-point-bold" width="20"
+                                        class="text-primary"></iconify-icon>
+                                    <div class="w-6 h-1 bg-primary/30 rounded-full mt-0.5 blur-sm"></div>
+                                </div>
+                                <!-- Route line -->
+                                <div
+                                    class="absolute top-[40%] left-[30%] w-[40%] h-0.5 bg-primary/40 rotate-[30deg] rounded-full">
+                                </div>
+                                <!-- Destination pin -->
+                                <div class="absolute bottom-1/3 right-1/4 flex flex-col items-center">
+                                    <iconify-icon icon="solar:map-point-wave-bold" width="16"
+                                        class="text-amber-400"></iconify-icon>
+                                </div>
+                            </div>
+                            <!-- Bottom card -->
+                            <div class="m-2 p-3 bg-white/5 rounded-xl border border-white/5 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <div
+                                        class="w-6 h-6 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
+                                        <iconify-icon icon="solar:bus-bold" width="10"
+                                            class="text-primary"></iconify-icon>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="h-1.5 w-2/3 bg-white/10 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="h-7 bg-primary/20 rounded-lg border border-primary/30 flex items-center justify-center">
+                                    <span class="text-[8px] text-primary font-bold uppercase tracking-wider">Book
+                                        Now</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: TourTaxi Website -->
+                <div class="group grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+                    <div
+                        class="rounded-2xl overflow-hidden border border-white/5 bg-surface aspect-[4/3] relative group-hover:border-white/20 transition-all duration-500 shadow-2xl">
+                        <img src="IMAGES/Screenshot 2026-02-21 180946.png" alt="TourTaxi Website Screenshot"
+                            class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-700">
+                    </div>
+
+                    <div class="transition-all duration-500 group-hover:translate-x-2">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div
+                                class="px-3 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider text-zinc-300 bg-white/5">
+                                Website</div>
+                            <div class="text-[10px] text-zinc-500">2025</div>
+                        </div>
+                        <h3 class="text-2xl text-white font-medium mb-3 group-hover:text-primary transition-colors">
+                            TourTaxi — Website</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-6">A full-service vehicle booking platform
+                            inspired by MakeMyTrip — built for travelers to browse, compare, and book taxis, cabs, and
+                            tour vehicles online. Features instant fare estimates, real-time availability, route
+                            planning, and a seamless reservation flow from search to confirmation.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">HTML
+                                / CSS / JS</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Responsive</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Vercel</span>
+                        </div>
+                        <a href="https://tourtaxikenya.vercel.app/" target="_blank"
+                            class="inline-flex items-center text-sm font-medium text-white border-b border-white/20 pb-1 hover:border-primary hover:text-primary transition-all">
+                            Visit Website <iconify-icon icon="solar:arrow-right-up-linear" class="ml-1"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 3: BlueSec Group Ltd -->
+                <div class="group grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+                    <div class="order-2 md:order-1 transition-all duration-500 group-hover:translate-x-2">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div
+                                class="px-3 py-1 rounded-full border border-white/10 text-[10px] uppercase tracking-wider text-zinc-300 bg-white/5">
+                                Security Services</div>
+                            <div class="text-[10px] text-zinc-500">2025</div>
+                        </div>
+                        <h3 class="text-2xl text-white font-medium mb-3 group-hover:text-primary transition-colors">
+                            BlueSec Group Ltd</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-6">A professional corporate website for a
+                            leading security services provider. BlueSec Group supplies trained security guards and
+                            personnel to companies, residential complexes, events, and industrial sites — the site
+                            showcases their services, team, and streamlined client inquiry flow.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">HTML
+                                / CSS / JS</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Responsive</span>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Multi-Page</span>
+                        </div>
+                        <a href="https://bluesec-group-ltd.vercel.app/" target="_blank"
+                            class="inline-flex items-center text-sm font-medium text-white border-b border-white/20 pb-1 hover:border-primary hover:text-primary transition-all">
+                            Visit Website <iconify-icon icon="solar:arrow-right-up-linear" class="ml-1"></iconify-icon>
+                        </a>
+                    </div>
+
+                    <div
+                        class="order-1 md:order-2 rounded-2xl overflow-hidden border border-white/5 bg-surface aspect-[4/3] relative group-hover:border-white/20 transition-all duration-500 shadow-2xl">
+                        <img src="IMAGES/Screenshot 2026-02-21 181902.png" alt="BlueSec Group Ltd Website Screenshot"
+                            class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-700">
+                    </div>
+                </div>
+
+            </div>
+    </section>
+
+    <!-- Founders Section -->
+    <section id="team" class="py-24 px-6 border-t border-white/5">
+        <div class="max-w-[1440px] mx-auto">
+            <div class="flex flex-col md:flex-row gap-6 mb-16 items-end justify-between">
+                <div>
+                    <p class="text-[10px] font-medium tracking-[0.3em] uppercase text-white mb-4">Core Leadership</p>
+                    <h2 class="md:text-5xl text-3xl font-extrabold tracking-tight font-display text-white mb-4">The
+                        Founders</h2>
+                    <p class="text-sm text-white max-w-md opacity-90">The visionaries behind THE BINARYX, dedicated to
+                        engineering the next generation of digital excellence.</p>
+                </div>
+                <div class="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent hidden md:block mx-8 mb-2"></div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                <!-- Founder 1 -->
+                <div
+                    class="spotlight-card p-8 rounded-3xl border border-white/5 bg-[#050505] relative group overflow-hidden">
+                    <div
+                        class="aspect-square rounded-2xl bg-white/5 mb-6 overflow-hidden border border-white/5 relative">
+                        <img src="C:\Users\vansh\OneDrive\Documents\the binary\IMAGES\1771345950312.jpg"
+                            alt="Vansh Panchal" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <h3
+                                class="text-lg font-semibold text-white mb-1 group-hover:text-primary transition-colors">
+                                Vansh Panchal</h3>
+                            <p class="text-[10px] text-white font-bold uppercase tracking-wider mb-2">Founder & CEO —
+                                The Binaryx Technology Pvt. Ltd.</p>
+                            <p class="text-[13px] text-white leading-relaxed mb-4 font-normal">A visionary leader
+                                driving the digital revolution. Under his guidance, THE BINARYX has evolved into a
+                                powerhouse of innovation, delivering high-impact solutions that redefine industry
+                                standards and empower global businesses to thrive in the modern age.</p>
+                        </div>
+                        <a href="https://www.linkedin.com/in/panchalvansh" target="_blank" rel="noopener noreferrer"
+                            class="text-zinc-500 hover:text-[#0077B5] transition-colors">
+                            <iconify-icon icon="mdi:linkedin" width="32"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Founder 2 -->
+                <div
+                    class="spotlight-card p-8 rounded-3xl border border-white/5 bg-[#050505] relative group overflow-hidden">
+                    <div
+                        class="aspect-square rounded-2xl bg-white/5 mb-6 overflow-hidden border border-white/5 relative">
+                        <img src="C:\Users\vansh\OneDrive\Documents\the binary\IMAGES\1771658621045.png"
+                            alt="Shilp Sevak" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <h3
+                                class="text-lg font-semibold text-white mb-1 group-hover:text-primary transition-colors">
+                                Shilp Sevak</h3>
+                            <p class="text-[10px] text-white font-bold uppercase tracking-wider mb-2">Founder & managing
+                                director</p>
+                            <p class="text-[13px] text-white leading-relaxed mb-4 font-normal">Architecting scalable
+                                solutions and
+                                leading our technical strategy to build high-performance digital products.</p>
+                        </div>
+                        <a href="https://www.linkedin.com/in/shilp-sevak-866a44320" target="_blank"
+                            rel="noopener noreferrer" class="text-zinc-500 hover:text-[#0077B5] transition-colors">
+                            <iconify-icon icon="mdi:linkedin" width="32"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Founder 3 -->
+                <div
+                    class="spotlight-card p-8 rounded-3xl border border-white/5 bg-[#050505] relative group overflow-hidden">
+                    <div
+                        class="aspect-square rounded-2xl bg-white/5 mb-6 overflow-hidden border border-white/5 relative">
+                        <img src="C:\Users\vansh\OneDrive\Documents\the binary\IMAGES\1771432501936.jpg"
+                            alt="Ajay Tanwar" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <h3
+                                class="text-lg font-semibold text-white mb-1 group-hover:text-primary transition-colors">
+                                Ajay Tanwar</h3>
+                            <p class="text-[10px] text-white font-bold uppercase tracking-wider mb-2">Founder &
+                                Accounting Manager</p>
+                            <p class="text-[13px] text-white leading-relaxed mb-4 font-normal">Strategizing financial
+                                growth and logistical framework. He ensures THE BINARYX maintains peak operational
+                                efficiency through rigorous resource allocation and fiscal transparency.</p>
+                        </div>
+                        <a href="https://www.linkedin.com/in/ajay-tanwar-844449373" target="_blank"
+                            rel="noopener noreferrer" class="text-zinc-500 hover:text-[#0077B5] transition-colors">
+                            <iconify-icon icon="mdi:linkedin" width="32"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Founder 4 -->
+                <div
+                    class="spotlight-card p-8 rounded-3xl border border-white/5 bg-[#050505] relative group overflow-hidden">
+                    <div
+                        class="aspect-square rounded-2xl bg-white/5 mb-6 overflow-hidden border border-white/5 relative">
+                        <img src="IMAGES/Gemini_Generated_Image_7s6psg7s6psg7s6p.png" alt="Vishavraj Parmar"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <h3
+                                class="text-lg font-semibold text-white mb-1 group-hover:text-primary transition-colors">
+                                Vishavraj Parmar</h3>
+                            <p class="text-[10px] text-white font-bold uppercase tracking-wider mb-2">Founder &
+                                Marketing Director</p>
+                            <p class="text-[13px] text-white leading-relaxed mb-4 font-normal">Architecting our global
+                                footprint and brand narrative. He connects our technical ingenuity with market-leading
+                                brands, turning engineering feats into business success stories.</p>
+                        </div>
+                        <a href="https://www.linkedin.com/in/vishavraj-sinh-parmar-622b7a34b/" target="_blank"
+                            rel="noopener noreferrer" class="text-zinc-500 hover:text-[#0077B5] transition-colors">
+                            <iconify-icon icon="mdi:linkedin" width="32"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Founder 5 -->
+                <div
+                    class="spotlight-card p-8 rounded-3xl border border-white/5 bg-[#050505] relative group overflow-hidden">
+                    <div
+                        class="aspect-square rounded-2xl bg-white/5 mb-6 overflow-hidden border border-white/5 relative">
+                        <img src="IMAGES/Gemini_Generated_Image_ekz08uekz08uekz0.png" alt="Rabari Dhruv"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <h3
+                                class="text-lg font-semibold text-white mb-1 group-hover:text-primary transition-colors">
+                                Rabari Dhruv</h3>
+                            <p class="text-[10px] text-white font-bold uppercase tracking-wider mb-2">Founder & CTO</p>
+                            <p class="text-[13px] text-white leading-relaxed mb-4 font-normal">Driving technical
+                                innovation and engineering excellence. He leads the core development team, ensuring
+                                every product is built with cutting-edge architecture and bulletproof code.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section id="contact" class="py-24 px-6 relative overflow-hidden">
+        <div class="max-w-2xl mx-auto relative z-10 text-center">
+            <h2 class="font-display text-4xl md:text-5xl font-medium text-white tracking-tight mb-6">Ready to upgrade?
+            </h2>
+            <p class="text-zinc-400 mb-6 text-balance">
+                Whether you need a complete platform overhaul or a specialized AI solution, our team is ready to deploy.
+                <br class="hidden md:block"> <span class="text-primary font-medium">Free 30-min strategy calls available
+                    weekly.</span>
+            </p>
+
+            <form id="contactForm"
+                class="text-left bg-[#050505] border border-white/10 rounded-2xl p-6 md:p-8 hover:border-white/20 transition-colors shadow-2xl relative group">
+
+                <div class="relative z-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="space-y-1.5">
+                            <label for="contactName"
+                                class="text-[10px] uppercase tracking-wider text-zinc-500 font-medium ml-1">Name <span
+                                    class="text-red-400">*</span></label>
+                            <input type="text" id="contactName" name="name" placeholder="Jane Doe" required
+                                class="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all placeholder:text-zinc-500">
+                            <p id="nameError" class="text-[10px] text-red-400 ml-1 hidden">Please enter your name</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label for="contactEmail"
+                                class="text-[10px] uppercase tracking-wider text-zinc-500 font-medium ml-1">Email <span
+                                    class="text-red-400">*</span></label>
+                            <input type="email" id="contactEmail" name="email" placeholder="jane@corp.com" required
+                                class="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all placeholder:text-zinc-500">
+                            <p id="emailError" class="text-[10px] text-red-400 ml-1 hidden">Please enter a valid email
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5 mb-6">
+                        <label for="contactMessage"
+                            class="text-[10px] uppercase tracking-wider text-zinc-500 font-medium ml-1">Message <span
+                                class="text-red-400">*</span></label>
+                        <textarea rows="3" id="contactMessage" name="message"
+                            placeholder="Tell us about your project..." required
+                            class="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all placeholder:text-zinc-500 resize-none"></textarea>
+                        <p id="messageError" class="text-[10px] text-red-400 ml-1 hidden">Please enter your message</p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitBtn"
+                        class="w-full bg-white text-black font-medium h-12 rounded-lg hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 group/btn relative overflow-hidden active:scale-[0.98]">
+                        <span id="btnText" class="relative z-10 flex items-center gap-2">Send Inquiry
+                            <iconify-icon icon="solar:arrow-right-linear"
+                                class="group-hover/btn:translate-x-1 transition-transform"></iconify-icon>
+                        </span>
+                        <!-- Loading Spinner -->
+                        <span id="btnSpinner" class="hidden relative z-10 flex items-center gap-2">
+                            <svg class="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                            </svg>
+                            Sending...
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Success Message (hidden by default) -->
+                <div id="successMessage"
+                    class="hidden absolute inset-0 z-20 bg-surface/95 backdrop-blur-xl rounded-2xl flex flex-col items-center justify-center text-center p-8">
+                    <div
+                        class="w-16 h-16 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mb-6 animate-bounce">
+                        <iconify-icon icon="solar:check-circle-bold" width="36" class="text-primary"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Message Sent!</h3>
+                    <p class="text-sm text-zinc-400 mb-6 max-w-sm">Thank you for reaching out. We'll get back to you
+                        within 24 hours.</p>
+                    <button type="button" id="sendAnotherBtn"
+                        class="px-6 py-2 rounded-full border border-white/10 text-sm text-white hover:bg-white/5 transition-colors">
+                        Send Another
+                    </button>
+                </div>
+
+                <!-- Error Message (hidden by default) -->
+                <div id="errorMessage"
+                    class="hidden absolute inset-0 z-20 bg-surface/95 backdrop-blur-xl rounded-2xl flex flex-col items-center justify-center text-center p-8">
+                    <div
+                        class="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-6">
+                        <iconify-icon icon="solar:close-circle-bold" width="36" class="text-red-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Something went wrong</h3>
+                    <p class="text-sm text-zinc-400 mb-6 max-w-sm">Please try again or email us directly.</p>
+                    <button type="button" id="tryAgainBtn"
+                        class="px-6 py-2 rounded-full border border-white/10 text-sm text-white hover:bg-white/5 transition-colors">
+                        Try Again
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Contact Form Script -->
+    <script>
+        (function () {
+            const form = document.getElementById('contactForm');
+            const nameInput = document.getElementById('contactName');
+            const emailInput = document.getElementById('contactEmail');
+            const messageInput = document.getElementById('contactMessage');
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const sendAnotherBtn = document.getElementById('sendAnotherBtn');
+            const tryAgainBtn = document.getElementById('tryAgainBtn');
+            const nameError = document.getElementById('nameError');
+            const emailError = document.getElementById('emailError');
+            const messageError = document.getElementById('messageError');
+
+            function isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            function clearErrors() {
+                nameError.classList.add('hidden');
+                emailError.classList.add('hidden');
+                messageError.classList.add('hidden');
+                nameInput.classList.remove('border-red-400/50');
+                emailInput.classList.remove('border-red-400/50');
+                messageInput.classList.remove('border-red-400/50');
+            }
+
+            function validate() {
+                clearErrors();
+                let valid = true;
+
+                if (!nameInput.value.trim()) {
+                    nameError.classList.remove('hidden');
+                    nameInput.classList.add('border-red-400/50');
+                    valid = false;
+                }
+                if (!emailInput.value.trim() || !isValidEmail(emailInput.value.trim())) {
+                    emailError.classList.remove('hidden');
+                    emailInput.classList.add('border-red-400/50');
+                    valid = false;
+                }
+                if (!messageInput.value.trim()) {
+                    messageError.classList.remove('hidden');
+                    messageInput.classList.add('border-red-400/50');
+                    valid = false;
+                }
+                return valid;
+            }
+
+            // Clear individual errors on input
+            nameInput.addEventListener('input', function () {
+                if (this.value.trim()) {
+                    nameError.classList.add('hidden');
+                    this.classList.remove('border-red-400/50');
+                }
+            });
+            emailInput.addEventListener('input', function () {
+                if (isValidEmail(this.value.trim())) {
+                    emailError.classList.add('hidden');
+                    this.classList.remove('border-red-400/50');
+                }
+            });
+            messageInput.addEventListener('input', function () {
+                if (this.value.trim()) {
+                    messageError.classList.add('hidden');
+                    this.classList.remove('border-red-400/50');
+                }
+            });
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                if (!validate()) return;
+
+                // Show loading state
+                submitBtn.disabled = true;
+                btnText.classList.add('hidden');
+                btnSpinner.classList.remove('hidden');
+
+                try {
+                    // Send via Web3Forms (free, no backend needed)
+                    const response = await fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            access_key: 'be3c4649-61a2-4207-bfba-d76eb3b95d3c',
+                            name: nameInput.value.trim(),
+                            email: emailInput.value.trim(),
+                            message: messageInput.value.trim(),
+                            subject: 'New Inquiry from THE BINARYX Website',
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        successMessage.classList.remove('hidden');
+                        form.reset();
+                    } else {
+                        throw new Error('Submission failed');
+                    }
+                } catch (err) {
+                    // If Web3Forms fails (e.g. no key set), use mailto fallback
+                    const subject = encodeURIComponent('New Inquiry from THE BINARYX Website');
+                    const body = encodeURIComponent(
+                        'Name: ' + nameInput.value.trim() + '\n' +
+                        'Email: ' + emailInput.value.trim() + '\n\n' +
+                        'Message:\n' + messageInput.value.trim()
+                    );
+                    window.location.href = 'mailto:danowaja@gmail.com?subject=' + subject + '&body=' + body;
+
+                    // Show success anyway since mailto will open
+                    successMessage.classList.remove('hidden');
+                    form.reset();
+                }
+
+                // Reset button
+                submitBtn.disabled = false;
+                btnText.classList.remove('hidden');
+                btnSpinner.classList.add('hidden');
+            });
+
+            // Reset form UI
+            sendAnotherBtn.addEventListener('click', function () {
+                successMessage.classList.add('hidden');
+                clearErrors();
+            });
+
+            tryAgainBtn.addEventListener('click', function () {
+                errorMessage.classList.add('hidden');
+                clearErrors();
+            });
+        })();
+    </script>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 bg-[#010101] relative overflow-hidden">
+        <!-- Subtle top glow -->
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent">
+        </div>
+
+        <!-- Main Footer Content -->
+        <div class="max-w-[1200px] mx-auto px-6 pt-16 pb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-16">
+
+                <!-- Brand Column -->
+                <div class="lg:col-span-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div
+                            class="flex bg-white/5 w-14 h-14 bg-[url(https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/81822c7d-ce9f-4b38-b74b-b69c9165a93b_320w.jpg)] bg-contain border-white/10 border rounded items-center justify-center overflow-hidden">
+                            <img src="C:\Users\vansh\OneDrive\Documents\the binary\WhatsApp Image 2025-11-19 at 20.32.22_54b9937f.jpg"
+                                alt="Logo" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-base font-bold tracking-tight font-display text-white">THE BINARYX TECHNOLOGY
+                            PRIVATE LIMITED</span>
+                    </div>
+                    <p class="text-sm text-zinc-200 leading-relaxed max-w-sm mb-6">Engineering digital reality through
+                        high-performance software and immersive interfaces for ambitious brands worldwide.</p>
+                    <div class="flex items-center gap-2 mb-6">
+                        <span class="flex h-2 w-2 relative">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                        </span>
+                        <span class="text-[11px] text-zinc-200">Available for new projects</span>
+                    </div>
+                    <!-- Social Icons -->
+                    <div class="flex gap-3">
+                        <a href="#"
+                            class="w-9 h-9 rounded-lg border border-white/5 bg-white/[0.02] flex items-center justify-center text-zinc-500 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all">
+                            <iconify-icon icon="mdi:twitter" width="16"></iconify-icon>
+                        </a>
+                        <a href="#"
+                            class="w-9 h-9 rounded-lg border border-white/5 bg-white/[0.02] flex items-center justify-center text-zinc-500 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all">
+                            <iconify-icon icon="mdi:github" width="16"></iconify-icon>
+                        </a>
+                        <a href="#"
+                            class="w-9 h-9 rounded-lg border border-white/5 bg-white/[0.02] flex items-center justify-center text-zinc-500 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all">
+                            <iconify-icon icon="mdi:linkedin" width="24"></iconify-icon>
+                        </a>
+                        <a href="#"
+                            class="w-9 h-9 rounded-lg border border-white/5 bg-white/[0.02] flex items-center justify-center text-zinc-500 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all">
+                            <iconify-icon icon="mdi:instagram" width="16"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Services Column -->
+                <div>
+                    <h4 class="text-[10px] uppercase tracking-[0.2em] text-zinc-200 font-semibold mb-5">Digital
+                        Expertise</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#expertise" class="text-sm text-zinc-200 hover:text-white transition-colors">App
+                                Development</a></li>
+                        <li><a href="#expertise" class="text-sm text-zinc-200 hover:text-white transition-colors">Web
+                                Development</a></li>
+                        <li><a href="#expertise" class="text-sm text-zinc-200 hover:text-white transition-colors">SaaS
+                                Development</a></li>
+                        <li><a href="#expertise" class="text-sm text-zinc-200 hover:text-white transition-colors">UI /
+                                UX Design</a></li>
+                        <li><a href="#expertise"
+                                class="text-sm text-primary hover:text-white transition-all font-medium">AI
+                                Integration</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Column -->
+                <div>
+                    <h4 class="text-[10px] uppercase tracking-[0.2em] text-zinc-200 font-semibold mb-5">The Hub</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#about-detailed"
+                                class="text-sm text-zinc-200 hover:text-white transition-colors">Our DNA</a></li>
+                        <li><a href="#process"
+                                class="text-sm text-zinc-200 hover:text-white transition-colors">Execution
+                                Flow</a></li>
+                        <li><a href="#work" class="text-sm text-zinc-200 hover:text-white transition-colors">Case
+                                Studies</a></li>
+                        <li><a href="#" class="text-sm text-zinc-200 hover:text-white transition-colors">Careers</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Connect Column -->
+                <div>
+                    <h4 class="text-[10px] uppercase tracking-[0.2em] text-zinc-200 font-semibold mb-5">Get in Touch
+                    </h4>
+                    <ul class="space-y-4">
+                        <li>
+                            <a href="mailto:thebinarytechnology@gmail.com"
+                                class="flex items-center gap-2 text-sm text-zinc-200 hover:text-primary transition-colors group">
+                                <iconify-icon icon="solar:letter-linear" width="16"
+                                    class="text-zinc-200 group-hover:text-primary transition-colors"></iconify-icon>
+                                thebinarytechnology@gmail.com
+                            </a>
+                        </li>
+
+                        <li>
+                            <div class="flex items-center gap-2 text-sm text-zinc-200">
+                                <iconify-icon icon="solar:clock-circle-linear" width="16"
+                                    class="text-zinc-200"></iconify-icon>
+                                Mon – Fri, 9AM – 6PM
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Newsletter Bar -->
+            <div
+                class="border border-white/5 rounded-2xl bg-white/[0.02] p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6 justify-between">
+                <div>
+                    <h4 class="text-sm font-semibold text-white mb-1">Stay updated</h4>
+                    <p class="text-xs text-zinc-200">Get the latest insights on tech, design, and innovation.</p>
+                </div>
+                <div class="flex w-full md:w-auto gap-2">
+                    <input type="email" placeholder="your@email.com"
+                        class="flex-1 md:w-64 bg-[#050505] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary/50 transition-all placeholder:text-zinc-700">
+                    <button
+                        class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-lime-500 to-emerald-600 text-xs font-bold text-black hover:from-lime-400 hover:to-emerald-500 transition-all whitespace-nowrap shadow-[0_0_10px_rgba(0,255,65,0.2)]">
+                        Subscribe
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-zinc-200">© 2024 THE BINARYX TECHNOLOGY PRIVATE LIMITED. All rights reserved.</p>
+                <div class="flex items-center gap-6 text-xs text-zinc-200">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Refund Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Timeline Animation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const timelineContainer = document.getElementById('timelineContainer');
+            const progressLine = document.getElementById('timelineProgress');
+            const timelineItems = document.querySelectorAll('.timeline-item');
+
+            const updateTimeline = () => {
+                const rect = timelineContainer.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+
+                const start = windowHeight * 0.8;
+                const end = windowHeight * 0.2;
+
+                const containerTop = rect.top;
+                const containerHeight = rect.height;
+
+                let progress = 0;
+
+                if (containerTop < start) {
+                    progress = (start - containerTop) / (containerHeight + (start - end));
+                    progress = Math.min(Math.max(progress, 0), 1);
+                }
+
+                progressLine.style.height = `${progress * 100}%`;
+
+                timelineItems.forEach((item) => {
+                    const itemRect = item.getBoundingClientRect();
+                    const node = item.querySelector('.timeline-node');
+
+                    if (itemRect.top < windowHeight * 0.85) {
+                        item.classList.remove('opacity-0', 'translate-y-12');
+                        item.classList.add('opacity-100', 'translate-y-0');
+                        if (node) node.classList.add('active');
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', updateTimeline);
+            updateTimeline();
+        });
+    </script>
+
+    <!-- Spotlight Effect Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.spotlight-card');
+
+            const handleMouseMove = (e) => {
+                const card = e.currentTarget;
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            };
+
+            cards.forEach(card => {
+                card.addEventListener('mousemove', handleMouseMove);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
