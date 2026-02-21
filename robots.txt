@@ -1,0 +1,27 @@
+# robots.txt for THE BINARYX TECHNOLOGY
+# https://thebinaryxtechnology.com
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://thebinaryxtechnology.com/sitemap.xml
+
+# Disallow admin or private directories
+Disallow: /admin/
+Disallow: /private/
+Disallow: /.git/
+Disallow: /.env
+
+# Allow all major crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
