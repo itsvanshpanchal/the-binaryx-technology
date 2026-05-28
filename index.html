@@ -506,9 +506,11 @@
     </section>
 
     <!-- AI Infrastructure Stack -->
-    <section class="bg-[#030303] border-white/5 border-t pt-24 pr-6 pb-24 pl-6 relative overflow-hidden" id="expertise">
+    <section class="border-white/5 border-t pt-24 pr-6 pb-24 pl-6 relative overflow-hidden bg-transparent" id="expertise">
         <!-- Neural-grid overlay (keeps existing background animations untouched) -->
-        <div class="absolute inset-0 bg-grid opacity-40 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-grid opacity-30 pointer-events-none"></div>
+        <!-- Glass film -->
+        <div class="absolute inset-0 bg-white/[0.01] backdrop-blur-[2px] pointer-events-none"></div>
         <div
             class="absolute -top-24 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-emerald-500/5 blur-[120px] rounded-[100%] pointer-events-none">
         </div>
@@ -525,8 +527,8 @@
                         class="md:text-5xl md:bg-clip-text md:text-transparent text-3xl font-extrabold tracking-tight font-display bg-[conic-gradient(from_180deg,var(--tw-gradient-stops))] from-emerald-300 via-cyan-400 to-emerald-300 mb-4">
                         Core Technologies</h2>
                     <p class="text-sm text-zinc-500 max-w-xl">
-                        We engineer compute, orchestration, and neural-scale systems that power next-generation AI — from
-                        distributed GPU fabrics to intelligent infrastructure control planes.
+                        We build proprietary deep-tech products for AI infrastructure — compute fabrics, neural-scale
+                        systems, and intelligent control planes designed to ship, scale, and launch into the market.
                     </p>
                 </div>
                 <div class="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent hidden md:block mx-8 mb-2"></div>
@@ -538,6 +540,9 @@
                         class="px-3 py-1 rounded-full border border-cyan-300/20 bg-cyan-300/5 text-[10px] uppercase tracking-wider text-cyan-200 font-medium">
                         REAL-TIME COMPUTE</span>
                     <span
+                        class="px-3 py-1 rounded-full border border-blue-300/20 bg-blue-300/5 text-[10px] uppercase tracking-wider text-blue-200 font-medium">
+                        PRODUCT LAUNCH PIPELINE</span>
+                    <span
                         class="px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] uppercase tracking-wider text-zinc-300 font-medium">
                         4 CORE DOMAINS</span>
                 </div>
@@ -547,7 +552,7 @@
 
                 <!-- AI Infrastructure — Large Card (spans 2 cols) -->
                 <div
-                    class="spotlight-card md:col-span-2 p-8 md:p-10 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden bg-white/[0.01]">
+                    class="spotlight-card md:col-span-2 p-8 md:p-10 rounded-3xl border border-white/10 relative group cursor-crosshair overflow-hidden bg-white/[0.02] backdrop-blur-xl">
                     <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                     <div
                         class="absolute top-0 right-0 p-8 opacity-[0.04] group-hover:opacity-[0.10] transition-opacity duration-700">
@@ -575,8 +580,8 @@
                                 class="text-2xl font-semibold text-white mb-3 group-hover:text-emerald-300 transition-colors duration-300">
                                 AI Infrastructure</h3>
                             <p class="text-sm text-zinc-400 max-w-xl leading-relaxed">
-                                Scalable compute fabrics, distributed storage, and orchestration layers engineered for
-                                training, inference, and real-time AI workloads across heterogeneous clusters.
+                                A product-grade compute fabric for AI training + inference: GPU scheduling, distributed
+                                storage, telemetry, and orchestration built to operate at scale and ship as a platform.
                             </p>
 
                             <div class="mt-7 grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -631,7 +636,7 @@
 
                 <!-- Neural Computing Systems — Tall Card (spans 2 rows) -->
                 <div
-                    class="spotlight-card md:col-span-1 md:row-span-2 p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden bg-white/[0.01]">
+                    class="spotlight-card md:col-span-1 md:row-span-2 p-8 rounded-3xl border border-white/10 relative group cursor-crosshair overflow-hidden bg-white/[0.02] backdrop-blur-xl">
                     <div class="absolute inset-0 bg-gradient-to-b from-blue-500/10 via-transparent to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                     <div class="relative z-10 h-full flex flex-col justify-between">
                         <div>
@@ -648,8 +653,8 @@
                                 class="text-xl text-white font-semibold mb-3 group-hover:text-cyan-200 transition-colors duration-300">
                                 Neural Computing Systems</h3>
                             <p class="text-sm text-zinc-400 leading-relaxed">
-                                Neural processing pipelines, vectorized execution, and intelligent scheduling for
-                                inference latency, throughput, and orchestration at the edge + core.
+                                A neural runtime layer that optimizes inference paths, vector execution, and intelligent
+                                scheduling — engineered as a deployable product across edge and core clusters.
                             </p>
                         </div>
 
@@ -696,7 +701,7 @@
 
                 <!-- High-Performance Computing — Regular Card -->
                 <div
-                    class="spotlight-card p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden bg-white/[0.01]">
+                    class="spotlight-card p-8 rounded-3xl border border-white/10 relative group cursor-crosshair overflow-hidden bg-white/[0.02] backdrop-blur-xl">
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                     <div class="relative z-10">
                         <div class="flex items-center justify-between mb-8">
@@ -712,8 +717,8 @@
                             class="text-xl text-white font-semibold mb-3 group-hover:text-blue-200 transition-colors duration-300">
                             High-Performance Computing</h3>
                         <p class="text-sm text-zinc-400 leading-relaxed mb-6">
-                            Parallel execution, high-bandwidth fabrics, and compute profiling for training pipelines,
-                            simulation workloads, and accelerated AI runtimes.
+                            Accelerated compute primitives for training + simulation: parallel execution, high-bandwidth
+                            fabrics, profiling, and performance tuning packaged into production-ready infrastructure.
                         </p>
 
                         <div class="grid grid-cols-2 gap-3">
@@ -744,7 +749,7 @@
 
                 <!-- Intelligent Infrastructure — Regular Card -->
                 <div
-                    class="spotlight-card p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden bg-white/[0.01]">
+                    class="spotlight-card p-8 rounded-3xl border border-white/10 relative group cursor-crosshair overflow-hidden bg-white/[0.02] backdrop-blur-xl">
                     <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                     <div class="relative z-10">
                         <div class="flex items-center justify-between mb-8">
@@ -761,7 +766,8 @@
                             Intelligent Infrastructure</h3>
                         <p class="text-sm text-zinc-400 leading-relaxed mb-6">
                             Control planes that observe, predict, and optimize system behavior — intelligent
-                            orchestration, policy automation, and self-healing infrastructure primitives.
+                            orchestration, policy automation, and self-healing primitives, built as a product layer that
+                            improves reliability and cost-efficiency at scale.
                         </p>
 
                         <div class="space-y-4">
