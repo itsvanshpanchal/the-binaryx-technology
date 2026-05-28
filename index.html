@@ -505,286 +505,292 @@
         </div>
     </section>
 
-    <!-- Our Expertise / Services -->
-    <section class="bg-[#030303] border-white/5 border-t pt-24 pr-6 pb-24 pl-6 relative" id="expertise">
-        <div class="max-w-[1200px] mx-auto">
+    <!-- AI Infrastructure Stack -->
+    <section class="bg-[#030303] border-white/5 border-t pt-24 pr-6 pb-24 pl-6 relative overflow-hidden" id="expertise">
+        <!-- Neural-grid overlay (keeps existing background animations untouched) -->
+        <div class="absolute inset-0 bg-grid opacity-40 pointer-events-none"></div>
+        <div
+            class="absolute -top-24 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-emerald-500/5 blur-[120px] rounded-[100%] pointer-events-none">
+        </div>
+        <div
+            class="absolute -bottom-24 right-0 w-[800px] h-[520px] bg-blue-500/5 blur-[140px] rounded-[100%] pointer-events-none">
+        </div>
+
+        <div class="max-w-[1200px] mx-auto relative z-10">
             <!-- Section Header -->
             <div class="flex flex-col md:flex-row gap-6 mb-16 items-end justify-between">
                 <div>
-                    <p class="text-[10px] font-medium tracking-[0.3em] uppercase text-primary mb-4">What We Do</p>
+                    <p class="text-[10px] font-medium tracking-[0.3em] uppercase text-primary mb-4">AI Infrastructure Stack</p>
                     <h2
-                        class="md:text-5xl md:bg-clip-text md:text-transparent text-3xl font-extrabold tracking-tight font-display bg-[conic-gradient(from_180deg,var(--tw-gradient-stops))] from-emerald-400 via-emerald-600 to-emerald-400 mb-4">
-                        Our Expertise</h2>
-                    <p class="text-sm text-zinc-500 max-w-md">End-to-end digital solutions — from concept to deployment.
-                        We build products that scale, perform, and look stunning.</p>
+                        class="md:text-5xl md:bg-clip-text md:text-transparent text-3xl font-extrabold tracking-tight font-display bg-[conic-gradient(from_180deg,var(--tw-gradient-stops))] from-emerald-300 via-cyan-400 to-emerald-300 mb-4">
+                        Core Technologies</h2>
+                    <p class="text-sm text-zinc-500 max-w-xl">
+                        We engineer compute, orchestration, and neural-scale systems that power next-generation AI — from
+                        distributed GPU fabrics to intelligent infrastructure control planes.
+                    </p>
                 </div>
                 <div class="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent hidden md:block mx-8 mb-2"></div>
-                <div class="flex items-center gap-3 mb-2">
-                    <span class="text-[10px] text-zinc-600 uppercase tracking-widest hidden md:inline">4 Core
-                        Services</span>
+                <div class="flex flex-wrap items-center justify-end gap-2 mb-2">
+                    <span
+                        class="px-3 py-1 rounded-full border border-emerald-400/20 bg-emerald-400/5 text-[10px] uppercase tracking-wider text-emerald-300 font-medium">
+                        ACTIVE RESEARCH</span>
+                    <span
+                        class="px-3 py-1 rounded-full border border-cyan-300/20 bg-cyan-300/5 text-[10px] uppercase tracking-wider text-cyan-200 font-medium">
+                        REAL-TIME COMPUTE</span>
+                    <span
+                        class="px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] uppercase tracking-wider text-zinc-300 font-medium">
+                        4 CORE DOMAINS</span>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-                <!-- APP DEVELOPMENT SERVICES — Large Card (spans 2 cols) -->
+                <!-- AI Infrastructure — Large Card (spans 2 cols) -->
                 <div
-                    class="spotlight-card md:col-span-2 p-8 md:p-10 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden">
+                    class="spotlight-card md:col-span-2 p-8 md:p-10 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden bg-white/[0.01]">
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                     <div
-                        class="absolute top-0 right-0 p-8 opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-700">
-                        <iconify-icon icon="solar:smartphone-2-linear" width="200" height="200"
-                            class="text-white rotate-12"></iconify-icon>
+                        class="absolute top-0 right-0 p-8 opacity-[0.04] group-hover:opacity-[0.10] transition-opacity duration-700">
+                        <iconify-icon icon="solar:server-2-linear" width="220" height="220"
+                            class="text-white rotate-6"></iconify-icon>
                     </div>
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    </div>
-                    <div class="relative z-10 h-full flex flex-col justify-between min-h-[200px]">
-                        <div class="flex items-center gap-4 mb-10">
-                            <div
-                                class="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-primary shadow-[0_0_15px_rgba(0,255,65,0.1)] group-hover:shadow-[0_0_25px_rgba(0,255,65,0.2)] transition-shadow">
-                                <iconify-icon icon="solar:smartphone-2-linear" width="24"></iconify-icon>
+                    <div class="relative z-10 h-full flex flex-col justify-between min-h-[240px]">
+                        <div class="flex items-center justify-between gap-4 mb-10">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-emerald-300 shadow-[0_0_20px_rgba(16,185,129,0.12)] group-hover:shadow-[0_0_30px_rgba(34,211,238,0.18)] transition-shadow">
+                                    <iconify-icon icon="solar:cpu-linear" width="24"></iconify-icon>
+                                </div>
+                                <div
+                                    class="px-3 py-1 rounded-full border border-emerald-400/20 bg-emerald-400/5 text-[10px] uppercase tracking-wider text-emerald-300 font-medium">
+                                    NEXT-GEN INFRASTRUCTURE</div>
                             </div>
-                            <div
-                                class="px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-[10px] uppercase tracking-wider text-primary font-medium">
-                                Popular</div>
+                            <div class="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-widest text-zinc-500">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400/70"></span> Fabric Online
+                            </div>
                         </div>
+
                         <div>
                             <h3
-                                class="text-2xl font-semibold text-white mb-3 group-hover:text-primary transition-colors duration-300">
-                                App Development Services</h3>
-                            <p class="text-sm text-zinc-400 max-w-lg leading-relaxed">Native and cross-platform mobile
-                                applications for iOS & Android. We craft performant, beautiful apps with Flutter, React
-                                Native, and Swift — from MVP to enterprise-grade products with real-time features,
-                                offline support, and seamless UX.</p>
-                            <div class="flex flex-wrap gap-2 mt-6">
-                                <span
-                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Flutter</span>
-                                <span
-                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">React
-                                    Native</span>
-                                <span
-                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Swift</span>
-                                <span
-                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Kotlin</span>
-                                <span
-                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Firebase</span>
+                                class="text-2xl font-semibold text-white mb-3 group-hover:text-emerald-300 transition-colors duration-300">
+                                AI Infrastructure</h3>
+                            <p class="text-sm text-zinc-400 max-w-xl leading-relaxed">
+                                Scalable compute fabrics, distributed storage, and orchestration layers engineered for
+                                training, inference, and real-time AI workloads across heterogeneous clusters.
+                            </p>
+
+                            <div class="mt-7 grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <div class="rounded-2xl border border-white/5 bg-white/[0.02] p-4">
+                                    <div class="text-[10px] uppercase tracking-widest text-zinc-500">GPU Utilization</div>
+                                    <div class="text-xl font-display font-medium text-white mt-1">87<span class="text-zinc-500 text-sm">%</span></div>
+                                </div>
+                                <div class="rounded-2xl border border-white/5 bg-white/[0.02] p-4">
+                                    <div class="text-[10px] uppercase tracking-widest text-zinc-500">Compute Scaling</div>
+                                    <div class="text-xl font-display font-medium text-white mt-1">12<span class="text-zinc-500 text-sm">x</span></div>
+                                </div>
+                                <div class="rounded-2xl border border-white/5 bg-white/[0.02] p-4">
+                                    <div class="text-[10px] uppercase tracking-widest text-zinc-500">AI Throughput</div>
+                                    <div class="text-xl font-display font-medium text-white mt-1">4.8<span class="text-zinc-500 text-sm"> PF</span></div>
+                                </div>
+                                <div class="rounded-2xl border border-white/5 bg-white/[0.02] p-4">
+                                    <div class="text-[10px] uppercase tracking-widest text-zinc-500">Infra Load</div>
+                                    <div class="text-xl font-display font-medium text-white mt-1">63<span class="text-zinc-500 text-sm">%</span></div>
+                                </div>
                             </div>
-                            <div class="mt-8 pt-6 border-t border-white/5">
-                                <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-4 font-semibold">Key
-                                    Deliverables</p>
-                                <ul class="grid grid-cols-2 gap-y-2 gap-x-4">
-                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon> Native
-                                        Core Apps</li>
-                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon> App
-                                        Store Submission</li>
-                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon>
-                                        Biometric Security</li>
-                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon> Push
-                                        Infrastructure</li>
-                                </ul>
+
+                            <div class="mt-7 pt-6 border-t border-white/5">
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="flex justify-between text-[10px] text-zinc-500 mb-1.5">
+                                            <span>Cluster Orchestration</span>
+                                            <span class="text-emerald-300">REAL-TIME</span>
+                                        </div>
+                                        <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                            <div class="h-full w-[92%] bg-emerald-400/40 rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[10px] text-zinc-500 mb-1.5">
+                                            <span>Distributed Storage</span>
+                                            <span class="text-cyan-200">LOW LATENCY</span>
+                                        </div>
+                                        <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                            <div class="h-full w-[88%] bg-cyan-400/25 rounded-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mt-5">
+                                    <span class="px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] text-zinc-300 font-medium uppercase tracking-widest">SCALABLE COMPUTE</span>
+                                    <span class="px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] text-zinc-300 font-medium uppercase tracking-widest">CLOUD INFRASTRUCTURE</span>
+                                    <span class="px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] text-zinc-300 font-medium uppercase tracking-widest">DISTRIBUTED ARCH</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SAAS DEVELOPMENT — Tall Card (spans 2 rows) -->
+                <!-- Neural Computing Systems — Tall Card (spans 2 rows) -->
                 <div
-                    class="spotlight-card md:col-span-1 md:row-span-2 p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    </div>
+                    class="spotlight-card md:col-span-1 md:row-span-2 p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden bg-white/[0.01]">
+                    <div class="absolute inset-0 bg-gradient-to-b from-blue-500/10 via-transparent to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                     <div class="relative z-10 h-full flex flex-col justify-between">
                         <div>
-                            <div
-                                class="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center mb-8 text-primary shadow-[0_0_15px_rgba(0,255,65,0.1)] group-hover:shadow-[0_0_25px_rgba(0,255,65,0.2)] transition-shadow">
-                                <iconify-icon icon="solar:cloud-linear" width="24"></iconify-icon>
+                            <div class="flex items-center justify-between mb-8">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-cyan-200 shadow-[0_0_20px_rgba(34,211,238,0.12)] group-hover:shadow-[0_0_30px_rgba(16,185,129,0.12)] transition-shadow">
+                                    <iconify-icon icon="solar:brain-linear" width="24"></iconify-icon>
+                                </div>
+                                <span
+                                    class="px-3 py-1 rounded-full border border-cyan-300/20 bg-cyan-300/5 text-[10px] uppercase tracking-wider text-cyan-200 font-medium">
+                                    ACTIVE RESEARCH</span>
                             </div>
                             <h3
-                                class="text-xl text-white font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
-                                SaaS Development</h3>
-                            <p class="text-sm text-zinc-400 leading-relaxed">Scalable, multi-tenant SaaS platforms built
-                                for growth. We engineer subscription billing, role-based access, analytics dashboards,
-                                and API-first architectures that handle millions of users.</p>
+                                class="text-xl text-white font-semibold mb-3 group-hover:text-cyan-200 transition-colors duration-300">
+                                Neural Computing Systems</h3>
+                            <p class="text-sm text-zinc-400 leading-relaxed">
+                                Neural processing pipelines, vectorized execution, and intelligent scheduling for
+                                inference latency, throughput, and orchestration at the edge + core.
+                            </p>
                         </div>
 
                         <div class="mt-8 space-y-4">
                             <div>
                                 <div class="flex justify-between text-[10px] text-zinc-500 mb-1.5">
-                                    <span>Scalability</span>
-                                    <span
-                                        class="text-primary group-hover:opacity-100 opacity-0 transition-opacity">99.9%</span>
+                                    <span>Neural Processing</span>
+                                    <span class="text-cyan-200">1.9T ops/s</span>
                                 </div>
                                 <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                    <div
-                                        class="h-full w-[95%] bg-primary/50 group-hover:w-full transition-all duration-1000 ease-out rounded-full">
-                                    </div>
+                                    <div class="h-full w-[90%] bg-cyan-400/30 rounded-full"></div>
                                 </div>
                             </div>
                             <div>
                                 <div class="flex justify-between text-[10px] text-zinc-500 mb-1.5">
-                                    <span>Security</span>
-                                    <span
-                                        class="text-primary group-hover:opacity-100 opacity-0 transition-opacity">Enterprise</span>
+                                    <span>Inference Latency</span>
+                                    <span class="text-emerald-300">&lt; 28ms</span>
                                 </div>
                                 <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                    <div
-                                        class="h-full w-[85%] bg-primary/30 group-hover:w-[95%] transition-all duration-1000 ease-out delay-100 rounded-full">
-                                    </div>
+                                    <div class="h-full w-[84%] bg-emerald-400/25 rounded-full"></div>
                                 </div>
                             </div>
                             <div>
                                 <div class="flex justify-between text-[10px] text-zinc-500 mb-1.5">
-                                    <span>Performance</span>
-                                    <span
-                                        class="text-primary group-hover:opacity-100 opacity-0 transition-opacity">&lt;100ms</span>
+                                    <span>Model Orchestration</span>
+                                    <span class="text-zinc-300">AUTO</span>
                                 </div>
                                 <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                    <div
-                                        class="h-full w-[90%] bg-primary/20 group-hover:w-full transition-all duration-1000 ease-out delay-200 rounded-full">
-                                    </div>
+                                    <div class="h-full w-[88%] bg-white/20 rounded-full"></div>
                                 </div>
                             </div>
-                            <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-white/5">
-                                <span
-                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Stripe</span>
-                                <span
-                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">AWS</span>
-                                <span
-                                    class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Supabase</span>
-                            </div>
-                            <div class="mt-6 pt-6 border-t border-white/5">
-                                <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-4 font-semibold">Core
-                                    Features</p>
-                                <ul class="space-y-2">
-                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon>
-                                        Multi-tenant Architecture</li>
-                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon> RBAC
-                                        Permissions</li>
-                                    <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                            icon="solar:check-circle-linear" class="text-primary"></iconify-icon>
-                                        Usage-based Billing</li>
-                                </ul>
+
+                            <div class="mt-5 pt-5 border-t border-white/5">
+                                <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-4 font-semibold">Status</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] text-zinc-300 font-medium uppercase tracking-widest">NEURAL COMPUTING</span>
+                                    <span class="px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] text-zinc-300 font-medium uppercase tracking-widest">REAL-TIME ROUTING</span>
+                                    <span class="px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] text-zinc-300 font-medium uppercase tracking-widest">INTELLIGENT SCHEDULER</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- WEB DEVELOPMENT — Regular Card -->
+                <!-- High-Performance Computing — Regular Card -->
                 <div
-                    class="spotlight-card p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    </div>
+                    class="spotlight-card p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden bg-white/[0.01]">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                     <div class="relative z-10">
-                        <div
-                            class="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center mb-8 text-primary shadow-[0_0_15px_rgba(0,255,65,0.1)] group-hover:shadow-[0_0_25px_rgba(0,255,65,0.2)] transition-shadow">
-                            <iconify-icon icon="solar:monitor-linear" width="24"></iconify-icon>
+                        <div class="flex items-center justify-between mb-8">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-300 shadow-[0_0_20px_rgba(59,130,246,0.12)] group-hover:shadow-[0_0_30px_rgba(34,211,238,0.12)] transition-shadow">
+                                <iconify-icon icon="solar:atom-linear" width="24"></iconify-icon>
+                            </div>
+                            <span
+                                class="px-3 py-1 rounded-full border border-blue-300/20 bg-blue-300/5 text-[10px] uppercase tracking-wider text-blue-200 font-medium">
+                                REAL-TIME COMPUTE</span>
                         </div>
                         <h3
-                            class="text-xl text-white font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
-                            Web Development</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed mb-6">High-performance websites and web
-                            applications built with React, Next.js, and modern backend stacks. SEO-optimized,
-                            responsive, and lightning fast.</p>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">React</span>
-                            <span
-                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Next.js</span>
-                            <span
-                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Node.js</span>
+                            class="text-xl text-white font-semibold mb-3 group-hover:text-blue-200 transition-colors duration-300">
+                            High-Performance Computing</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-6">
+                            Parallel execution, high-bandwidth fabrics, and compute profiling for training pipelines,
+                            simulation workloads, and accelerated AI runtimes.
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="rounded-2xl border border-white/5 bg-white/[0.02] p-4">
+                                <div class="text-[10px] uppercase tracking-widest text-zinc-500">Compute Nodes</div>
+                                <div class="text-lg font-display font-medium text-white mt-1">128</div>
+                            </div>
+                            <div class="rounded-2xl border border-white/5 bg-white/[0.02] p-4">
+                                <div class="text-[10px] uppercase tracking-widest text-zinc-500">Fabric BW</div>
+                                <div class="text-lg font-display font-medium text-white mt-1">3.2<span class="text-zinc-500 text-sm"> Tb/s</span></div>
+                            </div>
                         </div>
+
                         <div class="mt-6 pt-6 border-t border-white/5">
                             <ul class="space-y-2">
-                                <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                        icon="solar:check-circle-linear" class="text-primary"></iconify-icon> Core Web
-                                    Vitals Optimization</li>
-                                <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                        icon="solar:check-circle-linear" class="text-primary"></iconify-icon>
-                                    Server-side Rendering</li>
+                                <li class="flex items-center gap-2 text-[11px] text-zinc-400">
+                                    <iconify-icon icon="solar:check-circle-linear" class="text-emerald-300"></iconify-icon>
+                                    GPU scheduling + workload bin-packing
+                                </li>
+                                <li class="flex items-center gap-2 text-[11px] text-zinc-400">
+                                    <iconify-icon icon="solar:check-circle-linear" class="text-emerald-300"></iconify-icon>
+                                    Profiling: throughput, memory, latency
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <!-- UI/UX DESIGN — Regular Card -->
+                <!-- Intelligent Infrastructure — Regular Card -->
                 <div
-                    class="spotlight-card p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    </div>
+                    class="spotlight-card p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden bg-white/[0.01]">
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                     <div class="relative z-10">
-                        <div
-                            class="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center mb-8 text-primary shadow-[0_0_15px_rgba(0,255,65,0.1)] group-hover:shadow-[0_0_25px_rgba(0,255,65,0.2)] transition-shadow">
-                            <iconify-icon icon="solar:palette-linear" width="24"></iconify-icon>
+                        <div class="flex items-center justify-between mb-8">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-emerald-300 shadow-[0_0_20px_rgba(16,185,129,0.12)] group-hover:shadow-[0_0_30px_rgba(59,130,246,0.12)] transition-shadow">
+                                <iconify-icon icon="solar:widget-3-linear" width="24"></iconify-icon>
+                            </div>
+                            <span
+                                class="px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] uppercase tracking-wider text-zinc-300 font-medium">
+                                DISTRIBUTED NETWORKS</span>
                         </div>
                         <h3
-                            class="text-xl text-white font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
-                            UI / UX Design</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed mb-6">User-centered design that converts. We
-                            create intuitive interfaces, design systems, and interactive prototypes that look stunning
-                            and drive results.</p>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Figma</span>
-                            <span
-                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Prototyping</span>
-                            <span
-                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Design
-                                Systems</span>
-                        </div>
-                        <div class="mt-6 pt-6 border-t border-white/5">
-                            <ul class="space-y-2">
-                                <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                        icon="solar:check-circle-linear" class="text-primary"></iconify-icon>
-                                    Interactive Prototypes</li>
-                                <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                        icon="solar:check-circle-linear" class="text-primary"></iconify-icon> Brand
-                                    identity kits</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                            class="text-xl text-white font-semibold mb-3 group-hover:text-emerald-300 transition-colors duration-300">
+                            Intelligent Infrastructure</h3>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-6">
+                            Control planes that observe, predict, and optimize system behavior — intelligent
+                            orchestration, policy automation, and self-healing infrastructure primitives.
+                        </p>
 
-                <!-- AI INTEGRATION — New Card -->
-                <div
-                    class="spotlight-card p-8 rounded-3xl border border-white/5 relative group cursor-crosshair overflow-hidden">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    </div>
-                    <div class="relative z-10">
-                        <div
-                            class="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center mb-8 text-primary shadow-[0_0_15px_rgba(0,255,65,0.1)] group-hover:shadow-[0_0_25px_rgba(0,255,65,0.2)] transition-shadow">
-                            <iconify-icon icon="solar:globus-linear" width="24"></iconify-icon>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-[10px] text-zinc-500 mb-1.5">
+                                    <span>Infrastructure Load</span>
+                                    <span class="text-emerald-300">63%</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                    <div class="h-full w-[63%] bg-emerald-400/30 rounded-full"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-[10px] text-zinc-500 mb-1.5">
+                                    <span>Auto-Remediation</span>
+                                    <span class="text-cyan-200">ON</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                    <div class="h-full w-[86%] bg-cyan-400/20 rounded-full"></div>
+                                </div>
+                            </div>
                         </div>
-                        <h3
-                            class="text-xl text-white font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
-                            AI Integration</h3>
-                        <p class="text-sm text-zinc-400 leading-relaxed mb-6">Leveraging LLMs and machine learning to
-                            build intelligent automation and data-driven features for your platform.</p>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">OpenAI</span>
-                            <span
-                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">LangChain</span>
-                            <span
-                                class="px-3 py-1 rounded-full border border-white/5 bg-white/[0.03] text-[10px] text-zinc-400 font-medium">Python</span>
-                        </div>
+
                         <div class="mt-6 pt-6 border-t border-white/5">
-                            <ul class="space-y-2">
-                                <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                        icon="solar:check-circle-linear" class="text-primary"></iconify-icon> Custom
-                                    RAG Pipelines</li>
-                                <li class="flex items-center gap-2 text-[11px] text-zinc-400"><iconify-icon
-                                        icon="solar:check-circle-linear" class="text-primary"></iconify-icon> Agentic
-                                    Workflows</li>
-                            </ul>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] text-zinc-300 font-medium uppercase tracking-widest">INTELLIGENT SYSTEMS</span>
+                                <span class="px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] text-zinc-300 font-medium uppercase tracking-widest">POLICY ENGINE</span>
+                                <span class="px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] text-zinc-300 font-medium uppercase tracking-widest">OBSERVABILITY</span>
+                            </div>
                         </div>
                     </div>
                 </div>
