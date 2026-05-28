@@ -91,8 +91,8 @@
 
         .glass-nav {
             background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 9999px;
             position: relative;
@@ -210,6 +210,33 @@
                     transparent);
             filter: blur(4px);
             opacity: 0.3;
+        }
+
+        /* Performance: reduce expensive backdrop-filter work on scroll */
+        .ambient-glow {
+            filter: blur(80px) !important;
+        }
+
+        @media (max-width: 768px) {
+            .glass-nav {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+
+            .backdrop-blur-3xl,
+            .backdrop-blur-xl,
+            .backdrop-blur-lg,
+            .backdrop-blur-md,
+            .backdrop-blur-sm,
+            .backdrop-blur-\[2px\] {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+
+            /* Slightly reduce heavy glow sizes on small screens */
+            .ambient-glow {
+                filter: blur(64px) !important;
+            }
         }
 
         .timeline-progress-line {
