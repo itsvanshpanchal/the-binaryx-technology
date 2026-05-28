@@ -525,7 +525,7 @@
                     <p class="text-[10px] font-medium tracking-[0.3em] uppercase text-primary mb-4">AI Infrastructure Stack</p>
                     <h2
                         class="md:text-5xl md:bg-clip-text md:text-transparent text-3xl font-extrabold tracking-tight font-display bg-[conic-gradient(from_180deg,var(--tw-gradient-stops))] from-emerald-300 via-cyan-400 to-emerald-300 mb-4">
-                        Core Technologies</h2>
+                        <span id="coreTechTypewriter" class="typewriter">Core Technologies</span></h2>
                     <p class="text-sm text-zinc-500 max-w-xl">
                         We build proprietary deep-tech products for AI infrastructure — compute fabrics, neural-scale
                         systems, and intelligent control planes designed to ship, scale, and launch into the market.
@@ -2380,6 +2380,31 @@
 
                     // start after initial hero animation
                     setTimeout(tick, 900);
+                });
+            </script>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const el = document.getElementById('coreTechTypewriter');
+                    if (!el) return;
+
+                    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    if (prefersReducedMotion) return;
+
+                    const fullText = 'Core Technologies';
+                    let i = 0;
+                    el.textContent = '';
+
+                    const type = () => {
+                        i = Math.min(i + 1, fullText.length);
+                        el.textContent = fullText.slice(0, i);
+                        if (i < fullText.length) {
+                            setTimeout(type, 38);
+                        }
+                    };
+
+                    // start slightly after section reveal
+                    setTimeout(type, 500);
                 });
             </script>
 
