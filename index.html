@@ -440,8 +440,10 @@
                         class="lg:bg-clip-text lg:text-transparent bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-[#4d7a05] to-[#5d7a33]">Engineering</span>
                     <br>
                     <span
-                        class="text-transparent bg-clip-text bg-gradient-to-b from-white via-white/80 to-white/20">the
-                        Backbone of Artificial Intelligence.</span>
+                        class="text-transparent bg-clip-text bg-gradient-to-b from-white via-white/80 to-white/20">
+                        <span id="heroTypewriter" class="typewriter" aria-live="polite">the Backbone of Artificial
+                            Intelligence.</span>
+                    </span>
                 </h1>
 
                 <!-- Subheadline -->
@@ -2169,6 +2171,106 @@
                     cards.forEach(card => {
                         card.addEventListener('mousemove', handleMouseMove);
                     });
+                });
+            </script>
+
+            <!-- Typewriter Hero Script (no background changes) -->
+            <style>
+                .typewriter {
+                    position: relative;
+                    display: inline-block;
+                    white-space: nowrap;
+                }
+
+                .typewriter::after {
+                    content: "";
+                    display: inline-block;
+                    width: 0.09em;
+                    height: 1em;
+                    margin-left: 0.08em;
+                    transform: translateY(0.12em);
+                    background: rgba(255, 255, 255, 0.65);
+                    animation: typewriter-caret 900ms steps(1) infinite;
+                    border-radius: 999px;
+                }
+
+                @keyframes typewriter-caret {
+                    0%,
+                    49% {
+                        opacity: 1;
+                    }
+
+                    50%,
+                    100% {
+                        opacity: 0;
+                    }
+                }
+
+                @media (prefers-reduced-motion: reduce) {
+                    .typewriter::after {
+                        animation: none;
+                    }
+                }
+            </style>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const el = document.getElementById('heroTypewriter');
+                    if (!el) return;
+
+                    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    if (prefersReducedMotion) return;
+
+                    const phrases = [
+                        'the Backbone of Artificial Intelligence.',
+                        'AI Infrastructure at Scale.',
+                        'High-Performance Computing Systems.',
+                        'Deep Tech for the Intelligence Age.',
+                        'Cloud-to-Core Compute Architecture.'
+                    ];
+
+                    const typeSpeed = 32;      // ms per character
+                    const deleteSpeed = 18;    // ms per character
+                    const holdAfterType = 1200;
+                    const holdAfterDelete = 450;
+
+                    let phraseIndex = 0;
+                    let charIndex = 0;
+                    let isDeleting = false;
+
+                    const tick = () => {
+                        const full = phrases[phraseIndex];
+
+                        if (!isDeleting) {
+                            charIndex = Math.min(charIndex + 1, full.length);
+                            el.textContent = full.slice(0, charIndex);
+
+                            if (charIndex >= full.length) {
+                                isDeleting = true;
+                                setTimeout(tick, holdAfterType);
+                                return;
+                            }
+
+                            setTimeout(tick, typeSpeed);
+                            return;
+                        }
+
+                        // deleting
+                        charIndex = Math.max(charIndex - 1, 0);
+                        el.textContent = full.slice(0, charIndex);
+
+                        if (charIndex <= 0) {
+                            isDeleting = false;
+                            phraseIndex = (phraseIndex + 1) % phrases.length;
+                            setTimeout(tick, holdAfterDelete);
+                            return;
+                        }
+
+                        setTimeout(tick, deleteSpeed);
+                    };
+
+                    // start after initial hero animation
+                    setTimeout(tick, 900);
                 });
             </script>
 
