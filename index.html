@@ -1,4 +1,4 @@
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -212,12 +212,36 @@
             opacity: 0.3;
         }
 
-        /* Performance: reduce expensive backdrop-filter work on scroll */
-        .ambient-glow {
-            filter: blur(80px) !important;
+        /* Performance: lighter glass — blur is very costly while scrolling */
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        @media (max-width: 768px) {
+        .ambient-glow {
+            filter: blur(48px) !important;
+            opacity: 0.7;
+        }
+
+        html.is-scrolling .aura-background-component,
+        html.is-scrolling .ambient-glow,
+        html.is-scrolling .bg-grain {
+            visibility: hidden !important;
+        }
+
+        html.is-scrolling .backdrop-blur-3xl,
+        html.is-scrolling .backdrop-blur-xl,
+        html.is-scrolling .backdrop-blur-lg,
+        html.is-scrolling .backdrop-blur-md,
+        html.is-scrolling .backdrop-blur-sm,
+        html.is-scrolling .backdrop-blur-\[2px\],
+        html.is-scrolling .glass-nav,
+        html.is-scrolling .glass-card {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        @media (max-width: 1024px) {
             .glass-nav {
                 backdrop-filter: none !important;
                 -webkit-backdrop-filter: none !important;
@@ -233,10 +257,45 @@
                 -webkit-backdrop-filter: none !important;
             }
 
-            /* Slightly reduce heavy glow sizes on small screens */
             .ambient-glow {
-                filter: blur(64px) !important;
+                display: none !important;
             }
+        }
+
+        @media (min-width: 1025px) {
+
+            .backdrop-blur-3xl,
+            .backdrop-blur-xl,
+            .backdrop-blur-lg,
+            .backdrop-blur-md,
+            .backdrop-blur-sm,
+            .backdrop-blur-\[2px\] {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+
+            .glass-nav {
+                backdrop-filter: blur(8px) !important;
+                -webkit-backdrop-filter: blur(8px) !important;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .aura-background-component {
+                display: none !important;
+            }
+
+            .animate-\[spin_2s_linear_infinite\],
+            .animate-pulse-slow,
+            .animate-float,
+            .animate-ping {
+                animation: none !important;
+            }
+        }
+
+        .perf-section {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 800px;
         }
 
         .timeline-progress-line {
@@ -332,11 +391,10 @@
             box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
         }
 
-        /* Mobile Performance Optimizations */
+        /* Mobile / touch performance */
         @media (max-width: 768px) {
 
             .bg-grain,
-            .ambient-glow,
             .spotlight-card::before,
             .spotlight-card::after {
                 display: none !important;
@@ -383,34 +441,40 @@
         <div data-us-project="NaoyTHRiquOhW7PvwNgE" class="absolute w-full h-full left-0 top-0 -z-10"></div>
         <script type="text/javascript">
             !function () {
-                // Performance: Only load UnicornStudio WebGL on Desktop
-                if (window.innerWidth <= 768) return;
+                if (window.innerWidth <= 1024) return;
+                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-                var u = window.UnicornStudio;
-                if (u && u.init) {
-                    if (document.readyState === "loading") {
-                        document.addEventListener("DOMContentLoaded", function () { u.init(); });
-                    } else {
+                function bootUnicorn() {
+                    var u = window.UnicornStudio;
+                    if (u && u.init) {
                         u.init();
+                        return;
                     }
-                } else {
                     window.UnicornStudio = { isInitialized: false };
                     var i = document.createElement("script");
                     i.src = "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.0.3/dist/unicornStudio.umd.js";
-                    i.onload = function () {
-                        if (document.readyState === "loading") {
-                            document.addEventListener("DOMContentLoaded", function () { UnicornStudio.init(); });
-                        } else {
-                            UnicornStudio.init();
-                        }
-                    };
+                    i.onload = function () { UnicornStudio.init(); };
                     (document.head || document.body).appendChild(i);
+                }
+
+                var run = function () {
+                    if (document.readyState === "loading") {
+                        document.addEventListener("DOMContentLoaded", bootUnicorn, { once: true });
+                    } else {
+                        bootUnicorn();
+                    }
+                };
+
+                if ("requestIdleCallback" in window) {
+                    requestIdleCallback(run, { timeout: 2500 });
+                } else {
+                    setTimeout(run, 1200);
                 }
             }();
         </script>
     </div>
 
-    <div class="bg-grain"></div>
+    <div class="bg-grain hidden" aria-hidden="true"></div>
 
     <!-- Ambient Glows -->
     <div
@@ -464,7 +528,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="md:pt-56 md:pb-40 overflow-hidden pt-40 pr-6 pb-20 pl-6 relative">
+    <section id="hero" class="md:pt-56 md:pb-40 overflow-hidden pt-40 pr-6 pb-20 pl-6 relative">
         <!-- Grid Background -->
         <div class="absolute inset-0 bg-grid pointer-events-none z-0"></div>
 
@@ -556,7 +620,7 @@
     </section>
 
     <!-- Upcoming Products (scroll: 3 panels — add videos in /videos/) -->
-    <section id="products" class="border-t border-white/5 relative overflow-hidden bg-[#020202]">
+    <section id="products" class="perf-section border-t border-white/5 relative overflow-hidden bg-[#020202]">
         <div class="absolute inset-0 bg-grid opacity-25 pointer-events-none"></div>
         <div
             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-cyan-500/5 blur-[120px] rounded-[100%] pointer-events-none">
@@ -601,13 +665,13 @@
             <article
                 class="product-slide min-w-full shrink-0 px-6 snap-start">
                 <div
-                    class="max-w-[1200px] mx-auto rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-xl overflow-hidden">
+                    class="max-w-[1200px] mx-auto rounded-3xl glass-panel overflow-hidden">
                     <div class="grid lg:grid-cols-2 gap-0">
                         <div
                             class="relative aspect-video lg:aspect-auto lg:min-h-[420px] bg-[#050505] border-b lg:border-b-0 lg:border-r border-white/10">
                             <video
                                 class="product-video absolute inset-0 w-full h-full object-cover hidden lg:block"
-                                src="videos/product-1.mp4" poster="" muted loop playsinline preload="metadata"></video>
+                                data-src="videos/product-1.mp4" muted loop playsinline preload="none"></video>
                             <div
                                 class="product-video-fallback absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-gradient-to-br from-emerald-500/10 via-[#050505] to-cyan-500/10 lg:hidden">
                                 <iconify-icon icon="solar:play-circle-linear" width="48"
@@ -651,13 +715,13 @@
             <!-- Product 2 -->
             <article class="product-slide min-w-full shrink-0 px-6 snap-start">
                 <div
-                    class="max-w-[1200px] mx-auto rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-xl overflow-hidden">
+                    class="max-w-[1200px] mx-auto rounded-3xl glass-panel overflow-hidden">
                     <div class="grid lg:grid-cols-2 gap-0">
                         <div
                             class="relative aspect-video lg:aspect-auto lg:min-h-[420px] bg-[#050505] border-b lg:border-b-0 lg:border-r border-white/10">
                             <video
                                 class="product-video absolute inset-0 w-full h-full object-cover hidden lg:block"
-                                src="videos/product-2.mp4" poster="" muted loop playsinline preload="metadata"></video>
+                                data-src="videos/product-2.mp4" muted loop playsinline preload="none"></video>
                             <div
                                 class="product-video-fallback absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-gradient-to-br from-cyan-500/10 via-[#050505] to-emerald-500/10 lg:hidden">
                                 <iconify-icon icon="solar:play-circle-linear" width="48"
@@ -699,13 +763,13 @@
             <!-- Product 3 -->
             <article class="product-slide min-w-full shrink-0 px-6 snap-start">
                 <div
-                    class="max-w-[1200px] mx-auto rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-xl overflow-hidden">
+                    class="max-w-[1200px] mx-auto rounded-3xl glass-panel overflow-hidden">
                     <div class="grid lg:grid-cols-2 gap-0">
                         <div
                             class="relative aspect-video lg:aspect-auto lg:min-h-[420px] bg-[#050505] border-b lg:border-b-0 lg:border-r border-white/10">
                             <video
                                 class="product-video absolute inset-0 w-full h-full object-cover hidden lg:block"
-                                src="videos/product-3.mp4" poster="" muted loop playsinline preload="metadata"></video>
+                                data-src="videos/product-3.mp4" muted loop playsinline preload="none"></video>
                             <div
                                 class="product-video-fallback absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-gradient-to-br from-blue-500/10 via-[#050505] to-emerald-500/10 lg:hidden">
                                 <iconify-icon icon="solar:play-circle-linear" width="48"
@@ -748,11 +812,11 @@
     </section>
 
     <!-- AI Infrastructure Stack -->
-    <section class="border-white/5 border-t pt-24 pr-6 pb-24 pl-6 relative overflow-hidden bg-transparent" id="expertise">
+    <section class="perf-section border-white/5 border-t pt-24 pr-6 pb-24 pl-6 relative overflow-hidden bg-transparent" id="expertise">
         <!-- Neural-grid overlay (keeps existing background animations untouched) -->
         <div class="absolute inset-0 bg-grid opacity-30 pointer-events-none"></div>
         <!-- Glass film -->
-        <div class="absolute inset-0 bg-white/[0.01] backdrop-blur-[2px] pointer-events-none"></div>
+        <div class="absolute inset-0 bg-white/[0.01] pointer-events-none"></div>
         <div
             class="absolute -top-24 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-emerald-500/5 blur-[120px] rounded-[100%] pointer-events-none">
         </div>
@@ -1049,7 +1113,7 @@
     </section>
 
     <!-- Why Us (Minimal) -->
-    <section id="about" class="py-24 px-6 border-t border-white/5 bg-white/[0.01] overflow-hidden relative">
+    <section id="about" class="perf-section py-24 px-6 border-t border-white/5 bg-white/[0.01] overflow-hidden relative">
         <div class="absolute inset-0 bg-grid opacity-35 pointer-events-none"></div>
         <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[520px] bg-emerald-500/5 blur-[140px] rounded-[100%] pointer-events-none"></div>
         <div class="absolute -bottom-40 right-0 w-[900px] h-[600px] bg-blue-500/5 blur-[160px] rounded-[100%] pointer-events-none"></div>
@@ -2012,6 +2076,31 @@
                 </div>
             </footer>
 
+            <!-- Scroll + idle performance -->
+            <script>
+                (function () {
+                    let scrollEndTimer;
+                    const root = document.documentElement;
+
+                    const onScroll = () => {
+                        root.classList.add('is-scrolling');
+                        clearTimeout(scrollEndTimer);
+                        scrollEndTimer = setTimeout(() => root.classList.remove('is-scrolling'), 140);
+                    };
+
+                    window.addEventListener('scroll', onScroll, { passive: true });
+
+                    const aura = document.querySelector('.aura-background-component');
+                    const hero = document.getElementById('hero');
+                    if (aura && hero && 'IntersectionObserver' in window) {
+                        new IntersectionObserver((entries) => {
+                            const visible = entries.some((e) => e.isIntersecting);
+                            aura.style.visibility = visible ? 'visible' : 'hidden';
+                        }, { threshold: 0.08 }).observe(hero);
+                    }
+                })();
+            </script>
+
             <!-- Upcoming Products scroll + video -->
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
@@ -2022,11 +2111,19 @@
                     const prevBtn = document.getElementById('productsPrev');
                     const nextBtn = document.getElementById('productsNext');
                     const videos = scroller.querySelectorAll('.product-video');
+                    const canPlayVideo = window.matchMedia('(min-width: 1024px)').matches;
                     let activeIndex = 0;
+
+                    const ensureVideoSrc = (video) => {
+                        const src = video.dataset.src;
+                        if (!src || video.src) return;
+                        video.src = src;
+                        video.load();
+                    };
 
                     const getIndex = () => {
                         const w = scroller.clientWidth || 1;
-                        return Math.min(2, Math.max(0, Math.round(scroller.scrollLeft / w)));
+                        return Math.min(videos.length - 1, Math.max(0, Math.round(scroller.scrollLeft / w)));
                     };
 
                     const goTo = (index) => {
@@ -2035,13 +2132,17 @@
                     };
 
                     const syncVideos = (index) => {
+                        if (!canPlayVideo) return;
                         videos.forEach((video, i) => {
                             const panel = video.closest('.relative');
                             const fallbackLg = panel?.querySelector('.product-video-fallback-lg');
-                            if (i === index && video.readyState >= 2 && window.matchMedia('(min-width: 1024px)').matches) {
-                                video.classList.remove('hidden');
-                                fallbackLg?.classList.add('!hidden');
-                                video.play().catch(() => { });
+                            if (i === index) {
+                                ensureVideoSrc(video);
+                                if (video.readyState >= 2) {
+                                    video.classList.remove('hidden');
+                                    fallbackLg?.classList.add('!hidden');
+                                    video.play().catch(() => { });
+                                }
                             } else {
                                 video.pause();
                             }
@@ -2055,30 +2156,28 @@
                     };
 
                     prevBtn?.addEventListener('click', () => goTo(Math.max(0, activeIndex - 1)));
-                    nextBtn?.addEventListener('click', () => goTo(Math.min(2, activeIndex + 1)));
+                    nextBtn?.addEventListener('click', () => goTo(Math.min(videos.length - 1, activeIndex + 1)));
                     dots.forEach((dot) => {
                         dot.addEventListener('click', () => goTo(Number(dot.dataset.index)));
                     });
 
                     let scrollTicking = false;
                     scroller.addEventListener('scroll', () => {
-                        if (!scrollTicking) {
-                            requestAnimationFrame(() => {
-                                updateUI();
-                                scrollTicking = false;
-                            });
-                            scrollTicking = true;
-                        }
+                        if (scrollTicking) return;
+                        scrollTicking = true;
+                        requestAnimationFrame(() => {
+                            updateUI();
+                            scrollTicking = false;
+                        });
                     }, { passive: true });
 
                     videos.forEach((video) => {
                         const panel = video.closest('.relative');
                         const fallbackLg = panel?.querySelector('.product-video-fallback-lg');
                         video.addEventListener('loadeddata', () => {
-                            if (window.matchMedia('(min-width: 1024px)').matches) {
-                                video.classList.remove('hidden');
-                                fallbackLg?.classList.add('!hidden');
-                            }
+                            if (!canPlayVideo) return;
+                            video.classList.remove('hidden');
+                            fallbackLg?.classList.add('!hidden');
                         });
                         video.addEventListener('error', () => {
                             video.classList.add('hidden');
@@ -2090,23 +2189,30 @@
                 });
             </script>
 
-            <!-- Spotlight Effect Script -->
+            <!-- Spotlight Effect Script (throttled, hover only) -->
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
+                    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
                     const cards = document.querySelectorAll('.spotlight-card');
 
-                    const handleMouseMove = (e) => {
-                        const card = e.currentTarget;
-                        const rect = card.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
+                    cards.forEach((card) => {
+                        let frame = 0;
+                        let lastX = 0;
+                        let lastY = 0;
 
-                        card.style.setProperty('--mouse-x', `${x}px`);
-                        card.style.setProperty('--mouse-y', `${y}px`);
-                    };
+                        const apply = () => {
+                            frame = 0;
+                            card.style.setProperty('--mouse-x', `${lastX}px`);
+                            card.style.setProperty('--mouse-y', `${lastY}px`);
+                        };
 
-                    cards.forEach(card => {
-                        card.addEventListener('mousemove', handleMouseMove);
+                        card.addEventListener('mousemove', (e) => {
+                            const rect = card.getBoundingClientRect();
+                            lastX = e.clientX - rect.left;
+                            lastY = e.clientY - rect.top;
+                            if (!frame) frame = requestAnimationFrame(apply);
+                        }, { passive: true });
                     });
                 });
             </script>
